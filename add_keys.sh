@@ -37,10 +37,11 @@ set -euo pipefail
     curl -fs ${HOME_URL}/$1 > $TEMP && test -s $TEMP && add $TEMP
   }
 
-  TEMP=/tmp/pismenny_ssh_public_key
+  TEMP=~/pismenny_ssh_public_key
   HOME_URL=https://pismenny.ru/
 
   download_and_add id_ed25519.pub 
   download_and_add id_rsa.pub
+  rm -f ${TEMP}
   log Done
 }
