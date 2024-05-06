@@ -5,7 +5,7 @@
 https://whereby.com/pismenny
 
 
-# ДДобавление ключей на сервера для ssh доступов
+# Добавление ключей на сервера для ssh доступов
 
 ```sh
 curl -sfL https://pismenny.ru/add_keys.sh | bash
