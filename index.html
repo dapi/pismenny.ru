@@ -9,6 +9,11 @@
     <meta name="description" content="Danil Pismenny. Software engineering">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <style>body { background: #f6f7f3; background-attachment: fixed; background-image: linear-gradient(to bottom right, #e9eae1 , #f7f7f7, #e9eae1); padding-bottom: 1em; }
+      .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+      }
       article { background: none; border: none;}
       nav ul { text-align: left; }
       footer { padding-bottom: 0px; }
@@ -48,28 +53,33 @@
   </head>
   <body>
     <section>
-      <header>
+      <header class="clearfix">
         <figure class="photo__block">
           <a href="danil_pismenny.jpg">
             <img src="danil_pismenny.jpg" alt="Danil Pismenny's photo" style="max-height: 180px; border-radius: 10px"/>
           </a>
         </figure>
         <h1>Данил Письменный</h1>
-        <p>Инженер-программист, предприниматель</p>
+        <div>🏄 IT-предприниматель</div>
+        <p>✌️ <a href="mailto:danil@brandymint.ru">Почта</a>, <a href="http://t.me/pismenny">Телеграм</a></p>
       </header>
       <article style="padding-bottom: 0px; padding-top: 0px">
-        <p>В недавнем прошлом, с удовольствием, исполнял роль технического руководителя в <a href="https://samokat.tech" target="_blank">samokat.tech</a>.
-        <p>Сейчас: создаю финтех-сервисы, избавляю от техдолга, заторов в бэклоге и прокачиваю команды в роли внешнего консультанта.</p>
-        <p>Помогаю стартапам внедрять <a href="https://hadi-lab.ru">HADI-циклы и проверять гипотезы</a>.</p
-        <p>Провожу <a href="https://vk.com/sharim_meetup" target="_blank">IT-митапы</a> и <a href="https://vk.com/alfatalk1" target="_blank">конференции</a> в городе Чебоксары.</p>
+        <h1>Сейчас</h1>
+        <ul>
+          <li>Создаю криптовалютные финтех-сервисы.</li>
+          <li>Руковожу конструктором интернет-магазинов <a href="https://kiiosk.store">KIIIOSK.STORE</a> (Через нас уже продано товаров на на 2 мрлд.руб.)</li>
+          <li>Провожу <a href="https://vk.com/sharim_meetup" target="_blank">IT-митапы</a> и <a href="https://vk.com/alfatalk1" target="_blank">конференции</a> в городе Чебоксары. Помогаю стартапам встать на наго через <a href="https://hadi-lab.ru">ускорение проверки гипотез.</a></li>
+        </ul>
+        </article>
         
-        <p>✌️ Со мной можно разговаривать – <a href="mailto:danil@brandymint.ru">почта</a>, <a href="http://t.me/pismenny">телеграм</a></p>
-      </article>
-      <!-- Calendly badge widget begin -->
-<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-<script type="text/javascript">window.onload = function() { Calendly.initBadgeWidget({ url: 'https://calendly.com/pismenny/1-hour-meet', text: 'Записаться на онлайн-встречу', color: '#0069ff', textColor: '#ffffff' }); }</script>
-<!-- Calendly badge widget end -->
+        <article style="padding-bottom: 0px; padding-top: 0px">
+          <h1>В прошлом</h1>
+          <ul>
+            <li>Совсем недавно исполнял роль технического руководителя в <a href="https://samokat.tech" target="_blank">SAMOKAT.TECH</a>.</li>
+            <li>Успешно исполнил роль CTO в крипто-валютной бирже с обротом в 1ярд$</li>
+            <li>Создал, взростил и вышел из интернет-провайдера <a href="https://orionet.ru" target="_blank">ORIONET</a></li>
+          </ul>
+          </article>
        <footer>
         <nav>
          <ul>
@@ -89,8 +99,8 @@
           <ul class="nav--links">
             <li><a href="/id_ed25519.pub" target="_blank">Публичный ключ</a></li>
             <li><a href="/Реквизиты.pdf" target="_blank">Банковские реквизиты</a></li>
-            <li><a href="https://calendly.com/pismenny/1-hour-meet" target="_blank">Calendly</a></li>
-            <li><a href="https://docs.google.com/document/d/e/2PACX-1vS11hMqOPYvJ-FgAQRaf-lUage8H7Nwrfdmj_5dzObRXs3j3lcyTn288HfkIPD_00w0efhZTSCYizXb/pub" target="_blank">Типовой договор на разработку ПО</a></li>
+            <!--<li><a href="https://calendly.com/pismenny/1-hour-meet" target="_blank">Calendly</a></li>-->
+            <!--<li><a href="https://docs.google.com/document/d/e/2PACX-1vS11hMqOPYvJ-FgAQRaf-lUage8H7Nwrfdmj_5dzObRXs3j3lcyTn288HfkIPD_00w0efhZTSCYizXb/pub" target="_blank">Типовой договор на разработку ПО</a></li>-->
           </ul>
         </nav>
       </footer>
