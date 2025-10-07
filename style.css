@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: #f6f7f3;
   background-attachment: fixed;
@@ -41,7 +45,8 @@ nav ul {
 }
 
 footer {
-  padding-bottom: 0px;
+  padding-top: 1em;
+  padding-bottom: 1em;
   border-top: 1px solid #ccc;
 }
 
@@ -61,7 +66,12 @@ header {
 }
 
 nav.nav--links ul li {
-  margin-top: 10em;
+  display: inline-block;
+  margin-right: 1.5em;
+}
+
+nav.nav--links ul li:last-child {
+  margin-right: 0;
 }
 
 a {
@@ -140,5 +150,11 @@ section {
   nav ul.nav--links li {
     display: block;
     margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0.5em;
+  }
+
+  footer {
+    padding: 1.5em 18px;
   }
 }
