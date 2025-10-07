@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(cwebp:*)",
-      "Bash(awk:*)"
+      "Bash(awk:*)",
+      "Bash(magick:*)",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []

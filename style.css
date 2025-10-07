@@ -50,6 +50,12 @@ footer {
   border-top: 1px solid #ccc;
 }
 
+footer .copyright {
+  margin-top: 1em;
+  font-size: 0.9em;
+  color: #666;
+}
+
 .icon {
   max-width: 24px;
 }
@@ -100,6 +106,13 @@ a:focus-visible {
   outline: 3px solid #0069ff;
   outline-offset: 2px;
   border-radius: 2px;
+}
+
+/* External link indicator */
+a[target="_blank"]:not(.skip-link)::after {
+  content: " ↗";
+  font-size: 0.8em;
+  opacity: 0.7;
 }
 
 .photo__block img {
@@ -156,5 +169,60 @@ section {
 
   footer {
     padding: 1.5em 18px;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: white;
+    background-image: none;
+    color: black;
+  }
+
+  .skip-link,
+  nav,
+  footer nav {
+    display: none;
+  }
+
+  header {
+    padding-left: 0;
+  }
+
+  .photo__block {
+    float: left;
+    margin-right: 20px;
+    margin-top: 0;
+  }
+
+  .photo__block img {
+    max-height: 120px;
+  }
+
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+
+  a::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    word-break: break-all;
+  }
+
+  a[href^="mailto:"]::after,
+  a[href^="#"]::after {
+    content: "";
+  }
+
+  section {
+    max-width: 100%;
+  }
+
+  footer .copyright {
+    margin-top: 2em;
+    border-top: 1px solid #ccc;
+    padding-top: 1em;
   }
 }
