@@ -5,6 +5,24 @@ body {
   padding-bottom: 1em;
 }
 
+/* Skip navigation link for screen readers */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #0069ff;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 0 0 4px 0;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
 .clearfix::after {
   content: "";
   clear: both;
@@ -47,11 +65,31 @@ nav.nav--links ul li {
 }
 
 a {
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, outline 0.2s ease;
 }
 
 a:hover {
   color: #0069ff;
+}
+
+/* Focus styles for keyboard navigation */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 3px solid #0069ff;
+  outline-offset: 2px;
+}
+
+a:focus:not(:focus-visible) {
+  outline: none;
+}
+
+a:focus-visible {
+  outline: 3px solid #0069ff;
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 .photo__block img {
