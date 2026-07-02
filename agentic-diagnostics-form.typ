@@ -32,14 +32,20 @@
   #line(length: 100%, stroke: 0.45pt + line-gray)
 ]
 
-#let checkbox(body) = block(below: 6pt)[
+#let checkbox(body) = block(below: 7.6pt)[
   #grid(
-    columns: (10pt, 1fr),
-    column-gutter: 4pt,
+    columns: (13pt, 1fr),
+    column-gutter: 5pt,
     align: top,
-    [□],
-    body,
+    [#text(size: 11.2pt)[□]],
+    [#text(size: 9.9pt)[#body]],
   )
+]
+
+#let question-line(label, height: 20mm) = block(height: height)[
+  #label
+  #v(6.5mm)
+  #line(length: 100%, stroke: 0.45pt + line-gray)
 ]
 
 #let level-row(level, name, desc) = (
@@ -96,6 +102,7 @@
   ..level-row("6", [Операционная модель], [AI встроен в процессы, интеграции, принятие решений и управление организацией.]),
 )
 
+#v(11pt)
 #write-line[Текущий уровень:]
 #write-line[Почему выбрали именно его:]
 #write-line[Целевой уровень на 1-3 месяца:]
@@ -125,13 +132,13 @@
 
 #h2[4. Минимальные вопросы]
 
-#write-line(height: 22mm)[1. Зачем компании или команде сейчас внедрять агентскую разработку?]
-#write-line(height: 22mm)[2. Какой один рабочий процесс или тип задач лучше всего подходит для первого шага?]
-#write-line(height: 22mm)[3. Что уже пробовали с AI и где это помогло?]
-#write-line(height: 22mm)[4. Где AI дал нестабильный, опасный или слишком дорогой в проверке результат?]
-#write-line(height: 22mm)[5. Какие данные или системы нельзя подключать к AI на первом этапе?]
-#write-line(height: 22mm)[6. Какая метрика будет главным доказательством пользы для руководства?]
-#write-line(height: 22mm)[7. Что будет плохим исходом пилота?]
+#question-line[1. Зачем компании или команде сейчас внедрять агентскую разработку?]
+#question-line[2. Какой один рабочий процесс или тип задач лучше всего подходит для первого шага?]
+#question-line[3. Что уже пробовали с AI и где это помогло?]
+#question-line[4. Где AI дал нестабильный, опасный или слишком дорогой в проверке результат?]
+#question-line[5. Какие данные или системы нельзя подключать к AI на первом этапе?]
+#question-line[6. Какая метрика будет главным доказательством пользы для руководства?]
+#question-line[7. Что будет плохим исходом пилота?]
 
 #pagebreak()
 
@@ -214,5 +221,6 @@
 #v(3.5mm)
 #text(size: 8.9pt, fill: muted)[
   #strong[Автор формы:] Данил Письменный \
-  #strong[Заполненную форму отправить:] danil\@brandymint.ru
+  #strong[Заполненную форму отправить:] danil\@brandymint.ru \
+  #strong[Телефон:] +7 (903) 389-12-28
 ]
