@@ -130,27 +130,33 @@
 
 #pagebreak()
 
-#h2[5. Кандидаты в агентские процессы]
+#h2[5. Уже автоматизированные агентские процессы]
 
-Заполните 1-3 процесса. Можно грубо, без точных метрик.
+Перечислите процессы, где AI или агент уже регулярно помогает команде или действует сам. Если реестра нет, заполните по памяти - это покажет, что реестр агентских процессов нужно завести.
 
-#hint[Примеры: подготовка спецификации, ревью PR, генерация тестов, реализация по готовой спецификации, разбор дефекта, обновление документации.]
+#write-line[Есть ли реестр агентских процессов:]
+#write-line[Где он ведется:]
+#write-line[Кто владелец реестра:]
+#write-line[Как часто реестр обновляется:]
+#write-line[Какие метрики используются для оценки качества результата:]
+#write-line[Какие метрики используются для оценки уровня автоматизации:]
+#write-line[Какие метрики используются для оценки эффекта для команды или бизнеса:]
 
 #v(4pt)
 #table(
-  columns: (36mm, 42mm, 42mm, 27mm, 23mm),
+  columns: (33mm, 43mm, 34mm, 37mm, 23mm),
   fill: (x, y) => if y == 0 { table-gray } else { none },
   inset: (x: 4pt, y: 4pt),
   table.header(
-    [#text(weight: "bold")[Процесс / кандидат]],
-    [#text(weight: "bold")[Как сейчас работает]],
-    [#text(weight: "bold")[Как может помочь AI]],
-    [#text(weight: "bold")[Владелец]],
-    [#text(weight: "bold")[Риск]],
+    [#text(weight: "bold")[Процесс]],
+    [#text(weight: "bold")[Что уже автоматизировано]],
+    [#text(weight: "bold")[Уровень автоматизации]],
+    [#text(weight: "bold")[Метрики]],
+    [#text(weight: "bold")[Владелец / риск]],
   ),
-  block(height: 24mm)[], block(height: 24mm)[], block(height: 24mm)[], block(height: 24mm)[], block(height: 24mm)[],
-  block(height: 24mm)[], block(height: 24mm)[], block(height: 24mm)[], block(height: 24mm)[], block(height: 24mm)[],
-  block(height: 24mm)[], block(height: 24mm)[], block(height: 24mm)[], block(height: 24mm)[], block(height: 24mm)[],
+  block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[],
+  block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[],
+  block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[],
 )
 
 #pagebreak()
