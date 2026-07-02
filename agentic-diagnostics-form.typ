@@ -1,32 +1,32 @@
 #set page(
   paper: "a4",
-  margin: (x: 18mm, y: 17mm),
+  margin: (x: 19mm, y: 18mm),
   footer: context align(right)[#text(size: 8pt, fill: rgb("#777777"))[стр. #counter(page).display()]],
 )
-#set text(font: "Arial", size: 9.3pt, lang: "ru")
-#set par(leading: 0.72em, spacing: 0.74em, justify: false)
+#set text(font: "Arial", size: 9.7pt, lang: "ru")
+#set par(leading: 0.92em, spacing: 0.86em, justify: false)
 
 #let muted = rgb("#666666")
-#let line-gray = rgb("#9a9a9a")
+#let line-gray = rgb("#adadad")
 #let table-gray = rgb("#eeeeee")
 
-#let h1(body) = block(spacing: 10pt)[
+#let h1(body) = block(spacing: 12pt)[
   #text(size: 17pt, weight: "bold")[#body]
 ]
 
-#let h2(body) = block(above: 11pt, below: 5pt)[
+#let h2(body) = block(above: 13pt, below: 7pt)[
   #text(size: 13pt, weight: "bold")[#body]
 ]
 
-#let hint(body) = text(size: 8.7pt, fill: muted)[#body]
+#let hint(body) = text(size: 9pt, fill: muted)[#body]
 
-#let write-line(label, height: 9mm) = block(height: height)[
+#let write-line(label, height: 10.8mm) = block(height: height)[
   #label
-  #v(2.5mm)
+  #v(3.1mm)
   #line(length: 100%, stroke: 0.45pt + line-gray)
 ]
 
-#let checkbox(body) = block(below: 5.2pt)[
+#let checkbox(body) = block(below: 6pt)[
   #grid(
     columns: (10pt, 1fr),
     column-gutter: 4pt,
@@ -70,8 +70,8 @@
 
 #v(2pt)
 #set table(
-  stroke: 0.45pt + rgb("#9b9b9b"),
-  inset: (x: 4pt, y: 3.3pt),
+  stroke: 0.42pt + rgb("#a8a8a8"),
+  inset: (x: 5pt, y: 5pt),
   align: (x, y) => if x == 0 { center + horizon } else { left + horizon },
 )
 #table(
@@ -114,7 +114,7 @@
 #checkbox[Есть метрики эффекта AI-внедрения.]
 #checkbox[AI используется не только в разработке, но и в управленческих или операционных процессах.]
 
-#write-line(height: 16mm)[Если отметили пункт, который трудно подтвердить примером, напишите почему:]
+#write-line(height: 18mm)[Если отметили пункт, который трудно подтвердить примером, напишите почему:]
 
 #pagebreak()
 
@@ -142,14 +142,14 @@
 #write-line[Как часто реестр обновляется:]
 #write-line[Какие метрики качества результата используются:]
 #write-line[Какие метрики внедренности процесса используются:]
-#write-line(height: 14mm)[Какой последний проверочный факт можно показать: задача, PR, документ, чеклист, запуск процесса или решение человека:]
-#write-line(height: 14mm)[Какой негативный сигнал означает, что процесс нужно остановить или пересобрать:]
+#write-line(height: 15.5mm)[Какой последний проверочный факт можно показать: задача, PR, документ, чеклист, запуск процесса или решение человека:]
+#write-line(height: 15.5mm)[Какой негативный сигнал означает, что процесс нужно остановить или пересобрать:]
 
 #v(4pt)
 #table(
   columns: (31mm, 35mm, 40mm, 41mm, 23mm),
   fill: (x, y) => if y == 0 { table-gray } else { none },
-  inset: (x: 4pt, y: 4pt),
+  inset: (x: 5pt, y: 5pt),
   table.header(
     [#text(weight: "bold")[Процесс]],
     [#text(weight: "bold")[Что делает агент]],
@@ -157,9 +157,9 @@
     [#text(weight: "bold")[Метрика и последний факт]],
     [#text(weight: "bold")[Владелец / риск]],
   ),
-  block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[],
-  block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[],
-  block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[], block(height: 18mm)[],
+  block(height: 20mm)[], block(height: 20mm)[], block(height: 20mm)[], block(height: 20mm)[], block(height: 20mm)[],
+  block(height: 20mm)[], block(height: 20mm)[], block(height: 20mm)[], block(height: 20mm)[], block(height: 20mm)[],
+  block(height: 20mm)[], block(height: 20mm)[], block(height: 20mm)[], block(height: 20mm)[], block(height: 20mm)[],
 )
 
 #pagebreak()
@@ -172,7 +172,7 @@
 #table(
   columns: (25mm, 1fr),
   fill: (x, y) => if y == 0 { table-gray } else { none },
-  inset: (x: 4pt, y: 4pt),
+  inset: (x: 5pt, y: 5pt),
   table.header(
     [#text(weight: "bold")[Если ваш уровень]],
     [#text(weight: "bold")[Что уточнить]],
