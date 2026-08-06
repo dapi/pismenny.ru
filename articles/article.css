@@ -179,6 +179,15 @@
   box-shadow: 0 8px 28px rgba(23, 33, 43, 0.09);
 }
 
+.article-hero {
+  max-width: 100%;
+  margin: 2.25rem 0 2.5rem;
+}
+
+.article-hero img {
+  margin: 0;
+}
+
 .longread pre,
 .longread .highlight {
   overflow-x: auto;
