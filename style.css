@@ -52,13 +52,42 @@ nav ul {
 
 footer {
   margin-top: 3em;
-  padding-top: 1em;
-  padding-bottom: 1em;
+  padding: 1.5em 0 1em;
   border-top: 1px solid #ccc;
 }
 
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5em;
+}
+
+footer nav {
+  text-align: left;
+}
+
+footer nav h2 {
+  margin: 0 0 0.6em;
+  font-size: 1em;
+}
+
+footer nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+footer nav li {
+  display: block;
+  margin: 0 0 0.4em;
+}
+
+footer nav li:last-child {
+  margin-bottom: 0;
+}
+
 footer .copyright {
-  margin-top: 1em;
+  margin: 1.5em 0 0;
   font-size: 0.9em;
   color: #666;
 }
@@ -176,6 +205,11 @@ section {
 
   footer {
     padding: 1.5em 18px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25em;
   }
 }
 
