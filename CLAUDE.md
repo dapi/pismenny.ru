@@ -34,7 +34,20 @@ This is a static personal website for Danil Pismenny (pismenny.ru) hosted on Git
 
 The site is deployed via GitHub Pages with custom domain `pismenny.ru` (configured via `CNAME` file).
 
-**To deploy changes**: Simply push to the `master` branch. GitHub Pages will automatically serve updated content.
+**To deploy changes**: Push to the `master` branch. The explicit workflow in
+`.github/workflows/pages.yml` publishes the static site to GitHub Pages.
+
+### Draft articles
+
+Articles may be published on the site in draft status so they can be reviewed by
+direct link. A draft article must:
+
+- include `noindex,nofollow,noarchive` for `robots` and `googlebot`;
+- be clearly marked as `Черновик` in the visible article metadata;
+- not be linked from `articles/index.html`, `sitemap.xml`, or `articles/feed.xml`.
+
+When an article is approved, remove the draft marker and `noindex` directives,
+then add it to the article index and other discovery feeds as appropriate.
 
 ## Working with the Codebase
 
