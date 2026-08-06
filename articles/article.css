@@ -71,6 +71,32 @@
   margin-bottom: 1.5rem;
 }
 
+.article-deck {
+  max-width: 64ch;
+  margin: 0 0 2rem;
+  color: #435063;
+  font-size: 1.18rem;
+  line-height: 1.55;
+}
+
+.table-scroll {
+  max-width: 100%;
+  margin: 1.75rem 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-scroll table {
+  width: 100%;
+  min-width: 720px;
+  margin: 0;
+}
+
+.table-scroll:focus {
+  outline: 3px solid #0069ff;
+  outline-offset: 4px;
+}
+
 .subscribe-box {
   padding: 1.15rem 0;
   border-top: 1px solid rgba(23, 33, 43, 0.15);
