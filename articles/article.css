@@ -79,6 +79,18 @@
   line-height: 1.55;
 }
 
+.article-lead {
+  max-width: 64ch;
+  margin: 0 0 1.6rem;
+  font-size: 1.16rem;
+  font-weight: 600;
+  line-height: 1.58;
+}
+
+.table-scroll-hint {
+  display: none;
+}
+
 .table-scroll {
   max-width: 100%;
   margin: 1.75rem 0;
@@ -184,6 +196,10 @@
 
 .longread code {
   word-break: break-word;
+}
+
+.agent-roles-article pre code {
+  color: inherit;
 }
 
 .article-footer {
@@ -296,6 +312,31 @@
     max-width: none;
     font-size: 1.95rem;
     line-height: 1.08;
+  }
+
+  .agent-roles-article > p:not(.article-meta):not(.article-deck):not(.article-lead):not(.table-scroll-hint) {
+    margin-bottom: 0.85rem;
+  }
+
+  .article-lead {
+    font-size: 1.12rem;
+  }
+
+  .agent-roles-article pre.process-flow {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .table-scroll-hint {
+    display: block;
+    margin: 1.25rem 0 0.5rem;
+    color: #637083;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .table-scroll-hint + .table-scroll {
+    margin-top: 0;
   }
 
   .article-index header {
