@@ -71,6 +71,18 @@
   margin-bottom: 1.5rem;
 }
 
+.draft-label {
+  display: inline-block;
+  padding: 0.12rem 0.45rem;
+  border: 1px solid #d85b45;
+  border-radius: 999px;
+  color: #b64938;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .article-deck {
   max-width: 64ch;
   margin: 0 0 2rem;
