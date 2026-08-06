@@ -46,8 +46,18 @@
       </article>
     </main>
     <aside id="subscribe" class="subscribe-box" aria-label="Подписка">
-      <strong>Получать новые материалы</strong>
-      <span class="subscribe-links"><a href="https://t.me/startup_life_ru" target="_blank" rel="noopener noreferrer">Telegram</a><a href="feed.xml">RSS-лента</a></span>
+      <div class="subscribe-copy">
+        <strong>Получать новые материалы</strong>
+        <p>Новые статьи об агентной разработке — без лишних писем.</p>
+      </div>
+      <form action="https://buttondown.com/api/emails/embed-subscribe/dapi" method="post" class="embeddable-buttondown-form buttondown-form">
+        <label for="bd-email-index">Электронная почта</label>
+        <div class="subscribe-fields">
+          <input type="email" name="email" id="bd-email-index" placeholder="you@example.com" autocomplete="email" required>
+          <button type="submit">Подписаться</button>
+        </div>
+      </form>
+      <p class="subscribe-links"><span>Или читайте через</span><a href="https://t.me/startup_life_ru" target="_blank" rel="noopener noreferrer">Telegram</a><span aria-hidden="true">·</span><a href="feed.xml">RSS</a></p>
     </aside>
     <footer class="article-footer">
       <p class="footer-links"><span>Данил Письменный</span><a href="/">Обо мне</a><a href="mailto:danil@brandymint.ru">danil@brandymint.ru</a></p>

@@ -103,6 +103,61 @@
   border-bottom: 1px solid rgba(23, 33, 43, 0.15);
 }
 
+.subscribe-copy strong {
+  font-size: 1.08rem;
+}
+
+.subscribe-copy p {
+  max-width: 56ch;
+  margin: 0.25rem 0 0;
+  color: #536071;
+}
+
+.buttondown-form {
+  max-width: 34rem;
+  margin: 1rem 0 0.7rem;
+}
+
+.buttondown-form label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #435063;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.subscribe-fields {
+  display: flex;
+  align-items: stretch;
+  gap: 0.55rem;
+}
+
+.subscribe-fields input,
+.subscribe-fields button {
+  min-height: 2.75rem;
+  margin: 0;
+}
+
+.subscribe-fields input {
+  flex: 1;
+  min-width: 0;
+  background: #fff;
+}
+
+.subscribe-fields button {
+  flex: 0 0 auto;
+  padding-inline: 1rem;
+}
+
+.subscribe-links {
+  display: flex;
+  gap: 0.3rem 0.55rem;
+  flex-wrap: wrap;
+  margin: 0;
+  color: #637083;
+  font-size: 0.9rem;
+}
+
 .longread img {
   display: block;
   width: 100%;
@@ -205,17 +260,7 @@
 }
 
 .article-index .subscribe-box {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem 2rem;
   margin: 1rem 0 0;
-}
-
-.subscribe-links {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
 }
 
 .article-index .article-footer {
@@ -269,9 +314,12 @@
     font-size: 1.4rem;
   }
 
-  .article-index .subscribe-box {
-    align-items: flex-start;
+  .subscribe-fields {
+    align-items: stretch;
     flex-direction: column;
-    gap: 0.45rem;
+  }
+
+  .subscribe-fields button {
+    width: 100%;
   }
 }

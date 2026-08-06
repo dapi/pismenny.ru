@@ -148,7 +148,20 @@
     </main>
     <footer class="article-footer">
       <p><a href="/articles/">← Все статьи</a></p>
-      <p class="subscribe-box"><strong>Получать новые материалы:</strong> <a href="https://t.me/startup_life_ru" target="_blank" rel="noopener noreferrer">Telegram</a> · <a href="/articles/feed.xml">RSS-лента</a></p>
+      <aside class="subscribe-box" aria-label="Подписка">
+        <div class="subscribe-copy">
+          <strong>Получать новые материалы</strong>
+          <p>Новые статьи об агентной разработке — без лишних писем.</p>
+        </div>
+        <form action="https://buttondown.com/api/emails/embed-subscribe/dapi" method="post" class="embeddable-buttondown-form buttondown-form">
+          <label for="bd-email">Электронная почта</label>
+          <div class="subscribe-fields">
+            <input type="email" name="email" id="bd-email" placeholder="you@example.com" autocomplete="email" required>
+            <button type="submit">Подписаться</button>
+          </div>
+        </form>
+        <p class="subscribe-links"><span>Или читайте через</span><a href="https://t.me/startup_life_ru" target="_blank" rel="noopener noreferrer">Telegram</a><span aria-hidden="true">·</span><a href="/articles/feed.xml">RSS</a></p>
+      </aside>
       <p>Об агентной разработке и автоматизации процессов. Связаться: <a href="mailto:danil@brandymint.ru">danil@brandymint.ru</a>.</p>
     </footer>
   </section>
