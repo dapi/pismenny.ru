@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Почему grep недостаточно AI-агенту: Code Property Graph простыми словами — Данил Письменный</title>
+  <meta name="description" content="Как AST, CFG, call graph, data flow и граф зависимостей помогают AI-агенту понимать связи внутри репозитория.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://pismenny.ru/articles/code-property-graph.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://pismenny.ru/articles/code-property-graph.html">
+  <meta property="og:title" content="Почему grep недостаточно AI-агенту: Code Property Graph простыми словами">
+  <meta property="og:description" content="Как AST, CFG, call graph, data flow и граф зависимостей помогают AI-агенту понимать связи внутри репозитория.">
+  <meta property="og:image" content="https://pismenny.ru/articles/assets/cpg-layers.png">
+  <meta property="article:published_time" content="2026-08-06T00:00:00+05:00">
+  <meta property="article:author" content="Данил Письменный">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Почему grep недостаточно AI-агенту: Code Property Graph простыми словами">
+  <meta name="twitter:description" content="Как AST, CFG, call graph, data flow и граф зависимостей помогают AI-агенту понимать связи внутри репозитория.">
+  <meta name="twitter:image" content="https://pismenny.ru/articles/assets/cpg-layers.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yegor256/tacit@gh-pages/tacit-css-1.3.9.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="article.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Почему grep недостаточно AI-агенту: Code Property Graph простыми словами",
+    "description": "Как AST, CFG, call graph, data flow и граф зависимостей помогают AI-агенту понимать связи внутри репозитория.",
+    "datePublished": "2026-08-06",
+    "dateModified": "2026-08-06",
+    "mainEntityOfPage": "https://pismenny.ru/articles/code-property-graph.html",
+    "image": "https://pismenny.ru/articles/assets/cpg-layers.png",
+    "author": {
+      "@type": "Person",
+      "name": "Данил Письменный",
+      "url": "https://pismenny.ru/"
+    },
+    "citation": [
+      "https://app.mymeet.ai/ru/public-meetings/ab134fa3-e164-4e5a-89f0-c8530cfde37d",
+      "https://codegraph.ru/whitepaper.html",
+      "https://t.me/michaelsavin"
+    ]
+  }
+  </script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#article-content">К статье</a>
+  <section class="article-shell">
+    <nav class="article-nav" aria-label="Навигация">
+      <a href="/">Данил Письменный</a>
+      <a href="/articles/">Все статьи</a>
+    </nav>
+    <main id="article-content">
+      <article class="longread">
+<h1>Почему grep недостаточно AI-агенту: Code Property Graph простыми словами</h1>
+<p class="article-meta">6 августа 2026 · 8 минут чтения</p>
+<blockquote>
+<p>Это моя образовательная выжимка и развитие идей из <a href="https://app.mymeet.ai/ru/public-meetings/ab134fa3-e164-4e5a-89f0-c8530cfde37d" rel="nofollow">доклада Михаила Савина</a>, создателя Codegraph.ru. Это не авторский текст Михаила. Его Telegram: <a href="https://t.me/michaelsavin" rel="nofollow">@michaelsavin</a>.</p>
+</blockquote>
+<p>Когда AI-агент меняет большой репозиторий, ему недостаточно найти функцию по имени.</p>
+<p>Допустим, агент увидел <code class="notranslate">process_payment</code>. Чтобы безопасно изменить её, нужно понять:</p>
+<ul>
+<li>кто её вызывает;</li>
+<li>какие данные в неё попадают;</li>
+<li>при каких условиях выполняется вызов;</li>
+<li>какие модули от неё зависят;</li>
+<li>какие тесты проходят через этот путь;</li>
+<li>не нарушит ли изменение архитектурные границы.</li>
+</ul>
+<p>Текстовый поиск отвечает: «где встречается эта строка?»</p>
+<p>Code Property Graph позволяет задавать другой класс вопросов: «может ли пользовательский ввод пройти через три функции и попасть в опасный SQL-вызов?» или «может ли доменный модуль обратиться к базе данных в обход application layer?»</p>
+<p><a target="_blank" rel="noopener noreferrer" href="assets/cpg-layers.png"><img src="assets/cpg-layers.png" alt="Слои Code Property Graph" style="max-width: 100%;"></a></p>
+<h2>Сначала — что такое граф кода</h2>
+<p>Граф состоит из узлов и связей.</p>
+<p>В коде узлами могут быть файл, функция, переменная, условие, вызов или литерал. Связи объясняют, как эти элементы относятся друг к другу.</p>
+<p>Один и тот же фрагмент программы можно рассматривать сразу в нескольких представлениях:</p>
+<pre lang="text" class="notranslate"><code class="notranslate">AST              — из чего состоит код
+CFG              — по каким путям идёт выполнение
+Call graph       — кто кого вызывает
+Data flow        — куда движутся значения
+Dependency graph — от чего зависит компонент
+</code></pre>
+<p>Code Property Graph, или CPG, связывает эти представления в одну модель.</p>
+<h2>AST: форма кода</h2>
+<p>Возьмём выражение:</p>
+<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-s1">total</span> <span class="pl-c1">=</span> <span class="pl-s1">price</span> <span class="pl-c1">*</span> <span class="pl-s1">quantity</span></pre></div>
+<p>Упрощённое абстрактное синтаксическое дерево выглядит так:</p>
+<pre lang="text" class="notranslate"><code class="notranslate">Assignment
+├── Name: total
+└── Multiply
+    ├── Name: price
+    └── Name: quantity
+</code></pre>
+<p>AST позволяет увидеть, что перед нами присваивание, внутри которого находится умножение двух имён. Оно помогает искать конкретные конструкции, аргументы вызова, операторы и вложенность.</p>
+<p>Но AST почти ничего не говорит о том, какая ветка выполнится и откуда пришли значения <code class="notranslate">price</code> и <code class="notranslate">quantity</code>.</p>
+<h2>CFG: возможные пути выполнения</h2>
+<p>Control Flow Graph показывает переходы управления:</p>
+<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">if</span> <span class="pl-s1">amount</span> <span class="pl-c1">&gt;</span> <span class="pl-c1">0</span>:
+    <span class="pl-en">approve</span>()
+<span class="pl-k">else</span>:
+    <span class="pl-en">reject</span>()</pre></div>
+<p>В графе появится условие и две возможные ветки. Это позволяет находить недостижимый код, пропущенную обработку ошибок и пути к опасной операции.</p>
+<p>Важно: CFG — не граф вызовов. CFG показывает порядок и ветвление исполнения, а call graph связывает функции.</p>
+<h2>Call graph: кто кого вызывает</h2>
+<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-k">def</span> <span class="pl-en">checkout</span>(<span class="pl-s1">request</span>):
+    <span class="pl-s1">user</span> <span class="pl-c1">=</span> <span class="pl-en">authenticate</span>(<span class="pl-s1">request</span>)
+    <span class="pl-s1">order</span> <span class="pl-c1">=</span> <span class="pl-en">create_order</span>(<span class="pl-s1">user</span>)
+    <span class="pl-k">return</span> <span class="pl-en">charge</span>(<span class="pl-s1">order</span>)</pre></div>
+<p>Call graph добавит связи:</p>
+<pre lang="text" class="notranslate"><code class="notranslate">checkout → authenticate
+checkout → create_order
+checkout → charge
+</code></pre>
+<p>По такому графу можно оценить область влияния изменения, найти точки входа, циклические вызовы и центральные функции.</p>
+<p>Однако статический call graph всегда является приближением. Полиморфизм, dependency injection, рефлексия и динамические импорты могут породить несколько возможных целей вызова или скрыть часть связей. Поэтому точнее говорить «функция может вызвать», а не «всегда вызывает».</p>
+<h2>Data flow: куда движется конкретное значение</h2>
+<p>Рассмотрим небезопасный код:</p>
+<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-s1">query</span> <span class="pl-c1">=</span> <span class="pl-s1">request</span>.<span class="pl-c1">get</span>(<span class="pl-s">"q"</span>)
+<span class="pl-s1">sql</span> <span class="pl-c1">=</span> <span class="pl-s">"SELECT * FROM products WHERE name = '"</span> <span class="pl-c1">+</span> <span class="pl-s1">query</span> <span class="pl-c1">+</span> <span class="pl-s">"'"</span>
+<span class="pl-s1">result</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-c1">execute</span>(<span class="pl-s1">sql</span>)</pre></div>
+<p>Нас интересует путь значения:</p>
+<pre lang="text" class="notranslate"><code class="notranslate">HTTP-параметр q
+→ query
+→ конкатенация SQL-строки
+→ sql
+→ db.execute
+</code></pre>
+<p>Data-flow анализ может связать источник пользовательских данных с опасным приёмником. После этого код можно исправить параметризованным запросом:</p>
+<div class="highlight highlight-source-python"><pre class="notranslate"><span class="pl-s1">query</span> <span class="pl-c1">=</span> <span class="pl-s1">request</span>.<span class="pl-c1">get</span>(<span class="pl-s">"q"</span>)
+<span class="pl-s1">result</span> <span class="pl-c1">=</span> <span class="pl-s1">db</span>.<span class="pl-c1">execute</span>(
+    <span class="pl-s">"SELECT * FROM products WHERE name = ?"</span>,
+    (<span class="pl-s1">query</span>,),
+)</pre></div>
+<p>Такой анализ используют для поиска injection-уязвимостей, утечек секретов, передачи персональных данных и нарушений обязательной валидации.</p>
+<h2>Dependency graph: архитектурные границы</h2>
+<p>На уровне модулей нас интересуют связи другого масштаба:</p>
+<pre lang="text" class="notranslate"><code class="notranslate">web → application → domain
+                  → infrastructure
+</code></pre>
+<p>Если <code class="notranslate">domain</code> напрямую импортирует драйвер базы данных, одного поиска по слову <code class="notranslate">db</code> может быть недостаточно. Вызов может быть спрятан за обёрткой или интерфейсом.</p>
+<p>Комбинация AST, call graph и модульных связей позволяет проверять правила вроде:</p>
+<ul>
+<li>доменный слой не зависит от web;</li>
+<li>доступ к базе идёт только через разрешённый порт;</li>
+<li>публичный HTTP-handler не вызывает infrastructure в обход application layer;</li>
+<li>между пакетами нет циклов.</li>
+</ul>
+<h2>Что именно объединяет CPG</h2>
+<p>Классическая работа по Code Property Graph объединила три представления: AST, Control Flow Graph и Program Dependence Graph. Современные реализации обычно добавляют вызовы, типы, межпроцедурные связи и другие слои.</p>
+<p>Технически CPG — ориентированный размеченный граф со свойствами:</p>
+<ul>
+<li>у узлов есть тип, имя, код, файл и позиция;</li>
+<li>у рёбер есть направление и тип связи;</li>
+<li>между двумя узлами могут существовать разные связи одновременно.</li>
+</ul>
+<p>Например, один вызов может одновременно:</p>
+<ul>
+<li>быть дочерним узлом AST функции;</li>
+<li>находиться на определённом пути CFG;</li>
+<li>иметь ребро <code class="notranslate">CALL</code> к другой функции;</li>
+<li>участвовать в data-flow пути;</li>
+<li>принадлежать модулю с архитектурными ограничениями.</li>
+</ul>
+<p>CPG не нужно целиком рисовать на экране. Граф большого репозитория будет слишком велик. Практическая ценность появляется, когда запрос возвращает небольшой объяснимый путь и строки исходного кода.</p>
+<h2>Как несколько графов отвечают на один вопрос</h2>
+<p>Возьмём правило: «код домена не должен напрямую обращаться к базе данных».</p>
+<p>Проверка может выглядеть так:</p>
+<ol>
+<li>AST находит вызов метода доступа к данным.</li>
+<li>Call graph восстанавливает цепочку вызовов.</li>
+<li>Модульный граф определяет принадлежность вызывающей функции к <code class="notranslate">domain</code>.</li>
+<li>CFG проверяет, достижим ли этот вызов.</li>
+<li>Data flow показывает, какие значения попадают в запрос.</li>
+<li>CPG-запрос возвращает путь до конкретных строк как доказательство нарушения.</li>
+</ol>
+<p>Именно композиция отличает CPG от продвинутого grep.</p>
+<h2>Зачем это AI-агенту</h2>
+<p>Большая языковая модель хорошо объясняет найденный фрагмент, но плохо заменяет детерминированный анализ всего репозитория. Даже большое контекстное окно не гарантирует, что в него попали все косвенные вызовы и архитектурные связи.</p>
+<p>Я вижу полезное разделение труда:</p>
+<ol>
+<li>CPG или статический анализ строит карту и выполняет точный запрос.</li>
+<li>Агент получает не весь граф, а компактный путь с типами связей и строками кода.</li>
+<li>LLM объясняет риск, предлагает изменение и формирует план.</li>
+<li>После изменения анализ запускается повторно.</li>
+<li>Тесты и ревью подтверждают поведение и бизнес-смысл.</li>
+</ol>
+<p>Так агент не просто предполагает, что изменение безопасно, а опирается на воспроизводимые технические доказательства.</p>
+<h2>Что CPG не умеет</h2>
+<p>Важно не превратить CPG в новую магию.</p>
+<p>Граф может быть неполным из-за динамических вызовов, генерации кода, макросов или особенностей языка. Межпроцедурный анализ дорог, а устаревший граф опасен. Статический анализ также не знает бизнес-смысла операции.</p>
+<p>CPG способен показать, что <code class="notranslate">charge(order)</code> вызывается после <code class="notranslate">create_order</code>. Но он не докажет, что списание денег разрешено в конкретном пользовательском сценарии.</p>
+<p>Поэтому нужны два разных слоя доказательств:</p>
+<pre lang="text" class="notranslate"><code class="notranslate">Code graph:
+как устроен код и какие технические правила он нарушает
+
+Evidence graph:
+какое требование реализовано, каким тестом проверено и где результат
+</code></pre>
+<h2>Модель, которую стоит запомнить</h2>
+<pre lang="text" class="notranslate"><code class="notranslate">Текстовый поиск находит совпадения.
+AST понимает структуру.
+Графы понимают отношения.
+CPG позволяет задавать составные вопросы об отношениях.
+</code></pre>
+<p>Для агентной разработки это важный переход. Репозиторий перестаёт быть набором файлов, которые модель по очереди читает. Он становится проверяемой картой структуры, вызовов, потоков данных и зависимостей.</p>
+<p>Но финальное доказательство корректности всё равно дают не графы сами по себе, а их сочетание с тестами, требованиями, ревью и работающим кодом.</p>
+<p>Источники: <a href="https://www.ieee-security.org/TC/SP2014/papers/ModelingandDiscoveringVulnerabilitieswithCodePropertyGraphs.pdf" rel="nofollow">исходная работа о CPG</a>, <a href="https://docs.joern.io/code-property-graph/" rel="nofollow">документация Joern</a>, <a href="https://app.mymeet.ai/ru/public-meetings/ab134fa3-e164-4e5a-89f0-c8530cfde37d" rel="nofollow">доклад Михаила Савина</a>, <a href="https://codegraph.ru/whitepaper.html" rel="nofollow">whitepaper CodeGraph</a>.</p>
+      </article>
+    </main>
+    <footer class="article-footer">
+      <p><a href="/articles/">← Все статьи</a></p>
+      <p>Об агентной разработке и автоматизации процессов. Связаться: <a href="mailto:danil@brandymint.ru">danil@brandymint.ru</a>.</p>
+    </footer>
+  </section>
+</body>
+</html>

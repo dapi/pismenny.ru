@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>«Бесконечная» сессия AI-агента — это не бесконечный контекст — Данил Письменный</title>
+  <meta name="description" content="Почему надёжный агентный процесс должен хранить состояние задачи, контракты и доказательства, а не бесконечную историю чата.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://pismenny.ru/articles/infinite-agent-session.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://pismenny.ru/articles/infinite-agent-session.html">
+  <meta property="og:title" content="«Бесконечная» сессия AI-агента — это не бесконечный контекст">
+  <meta property="og:description" content="Почему надёжный агентный процесс должен хранить состояние задачи, контракты и доказательства, а не бесконечную историю чата.">
+  <meta property="og:image" content="https://pismenny.ru/articles/assets/infinite-session.png">
+  <meta property="article:published_time" content="2026-08-06T00:00:00+05:00">
+  <meta property="article:author" content="Данил Письменный">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="«Бесконечная» сессия AI-агента — это не бесконечный контекст">
+  <meta name="twitter:description" content="Почему надёжный агентный процесс должен хранить состояние задачи, контракты и доказательства, а не бесконечную историю чата.">
+  <meta name="twitter:image" content="https://pismenny.ru/articles/assets/infinite-session.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yegor256/tacit@gh-pages/tacit-css-1.3.9.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="article.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "«Бесконечная» сессия AI-агента — это не бесконечный контекст",
+    "description": "Почему надёжный агентный процесс должен хранить состояние задачи, контракты и доказательства, а не бесконечную историю чата.",
+    "datePublished": "2026-08-06",
+    "dateModified": "2026-08-06",
+    "mainEntityOfPage": "https://pismenny.ru/articles/infinite-agent-session.html",
+    "image": "https://pismenny.ru/articles/assets/infinite-session.png",
+    "author": {
+      "@type": "Person",
+      "name": "Данил Письменный",
+      "url": "https://pismenny.ru/"
+    },
+    "citation": [
+      "https://app.mymeet.ai/ru/public-meetings/ab134fa3-e164-4e5a-89f0-c8530cfde37d",
+      "https://codegraph.ru/whitepaper.html",
+      "https://t.me/michaelsavin"
+    ]
+  }
+  </script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#article-content">К статье</a>
+  <section class="article-shell">
+    <nav class="article-nav" aria-label="Навигация">
+      <a href="/">Данил Письменный</a>
+      <a href="/articles/">Все статьи</a>
+    </nav>
+    <main id="article-content">
+      <article class="longread">
+<h1>«Бесконечная» сессия AI-агента — это не бесконечный контекст</h1>
+<p class="article-meta">6 августа 2026 · 6 минут чтения</p>
+<blockquote>
+<p>Это моя выжимка и прикладная интерпретация <a href="https://app.mymeet.ai/ru/public-meetings/ab134fa3-e164-4e5a-89f0-c8530cfde37d" rel="nofollow">доклада Михаила Савина</a>, создателя Codegraph.ru. Это не авторский текст Михаила. Его Telegram: <a href="https://t.me/michaelsavin" rel="nofollow">@michaelsavin</a>.</p>
+</blockquote>
+<p>Когда AI-агент работает над задачей несколько часов или дней, первая идея кажется очевидной: нужно дать ему больше контекста и не завершать диалог.</p>
+<p>Но длинный чат плохо превращается в надёжный производственный процесс. Контекст разрастается, важные ограничения теряются среди старых сообщений, модель начинает противоречить собственным решениям, а после сбоя работу трудно воспроизвести.</p>
+<p>Я всё больше прихожу к другому выводу: агенту нужна не бесконечная память разговора, а долговечное состояние задачи.</p>
+<p>Эта мысль особенно чётко прозвучала у меня после доклада Михаила Савина о цифровых ролях, оркестрации и Code Property Graph. Ниже я отделяю услышанную концепцию от своей прикладной интерпретации для разработки с Memory Bank.</p>
+<p><a target="_blank" rel="noopener noreferrer" href="assets/infinite-session.png"><img src="assets/infinite-session.png" alt="Схема бесконечной сессии" style="max-width: 100%;"></a></p>
+<h2>Сессия должна заканчиваться. Задача — нет</h2>
+<p>Под «бесконечной сессией» я понимаю последовательность коротких запусков:</p>
+<pre lang="text" class="notranslate"><code class="notranslate">прочитать состояние задачи
+→ выполнить один ограниченный шаг
+→ записать артефакты и доказательства
+→ проверить результат
+→ передать задачу следующей роли
+</code></pre>
+<p>Каждый запуск может использовать новую модель, новый контекст и даже другого исполнителя. Их объединяет не история чата, а идентификатор задачи и сохранённое состояние.</p>
+<p>Такой процесс переживает:</p>
+<ul>
+<li>исчерпание контекстного окна;</li>
+<li>compact и потерю части диалога;</li>
+<li>падение модели или инструмента;</li>
+<li>паузу между рабочими сессиями;</li>
+<li>смену модели, агента или человека;</li>
+<li>повторный запуск после неудачной проверки.</li>
+</ul>
+<p>Если для продолжения обязательно нужен весь предыдущий разговор, процесс остаётся хрупким. Если достаточно прочитать несколько актуальных документов и состояние задачи, процесс становится возобновляемым.</p>
+<h2>Что именно нужно сохранять</h2>
+<p>Я называю такой пакет состояния Task Capsule — капсулой задачи. Название вторично; важен состав.</p>
+<p>Минимальная капсула отвечает на вопросы:</p>
+<ul>
+<li>какую задачу мы решаем;</li>
+<li>на какой стадии находимся;</li>
+<li>какая роль сейчас выполняет работу;</li>
+<li>какие решения уже приняты;</li>
+<li>где лежат актуальные артефакты;</li>
+<li>какие риски и блокировки открыты;</li>
+<li>что должно произойти дальше;</li>
+<li>при каких условиях работу нужно остановить.</li>
+</ul>
+<p>Например:</p>
+<div class="highlight highlight-source-yaml"><pre class="notranslate"><span class="pl-ent">task_id</span>: <span class="pl-s">FT-042</span>
+<span class="pl-ent">stage</span>: <span class="pl-s">implementation</span>
+<span class="pl-ent">current_role</span>: <span class="pl-s">implementer</span>
+<span class="pl-ent">next_role</span>: <span class="pl-s">verifier</span>
+<span class="pl-ent">status</span>: <span class="pl-s">active</span>
+<span class="pl-ent">artifacts</span>:
+  <span class="pl-ent">brief</span>: <span class="pl-s">features/FT-042/brief.md</span>
+  <span class="pl-ent">design</span>: <span class="pl-s">features/FT-042/design.md</span>
+  <span class="pl-ent">plan</span>: <span class="pl-s">features/FT-042/implementation-plan.md</span>
+<span class="pl-ent">open_risks</span>:
+  - <span class="pl-s">missing_negative_scenario</span>
+<span class="pl-ent">next_action</span>: <span class="pl-s">Implement STEP-03</span>
+<span class="pl-ent">stop_conditions</span>:
+  - <span class="pl-s">plan and code contract diverge</span>
+  - <span class="pl-s">required test evidence missing</span></pre></div>
+<p>Это намного компактнее полного чата. И, что важнее, это можно проверить машиной.</p>
+<h2>Цифровая роль — не персонаж, а контракт</h2>
+<p>В обсуждаемом подходе роль — не «агент-архитектор с характером». Это ограниченный пакет:</p>
+<ul>
+<li>инструкция;</li>
+<li>разрешённые инструменты;</li>
+<li>входной контракт;</li>
+<li>ожидаемые артефакты;</li>
+<li>границы изменений;</li>
+<li>критерии завершения;</li>
+<li>допустимый следующий переход.</li>
+</ul>
+<p>Например, разработчик получает brief, design и implementation plan, а вернуть должен изменения кода, результаты тестов и evidence log. Он не может молча изменить требования: для этого нужен возврат на предыдущую стадию.</p>
+<p>LLM выполняет работу внутри шага, но не владеет всем процессом. Переходами владеет workflow.</p>
+<h2>Workflow важнее промпта</h2>
+<p>Хороший промпт помогает роли выполнить шаг. Но он не отвечает на системные вопросы:</p>
+<ul>
+<li>можно ли начинать реализацию без согласованного design;</li>
+<li>все ли обязательные файлы созданы;</li>
+<li>заполнены ли acceptance criteria;</li>
+<li>пройдены ли тесты;</li>
+<li>можно ли передавать результат на проверку;</li>
+<li>что делать после неудачного handoff.</li>
+</ul>
+<p>Для этого нужен workflow как конечный автомат: у задачи есть состояние, разрешённые переходы и проверяемые условия.</p>
+<p>На встрече обсуждалась оркестрация вокруг Temporal и декларативного описания workflow. Но я бы не начинал с тяжёлого runtime. Сначала полезно доказать саму модель на файлах, Git и небольшом валидаторе.</p>
+<h2>Как внедрять это без большой платформы</h2>
+<p>Я вижу три последовательных уровня.</p>
+<h3>1. Файловая оркестрация</h3>
+<p>Для каждой активной задачи создаётся пакет документов. Текущее состояние хранится в frontmatter или компактном handoff-файле. Git становится долговечным хранилищем изменений и истории.</p>
+<p>Уже на этом уровне новую сессию можно запускать не с пересказа старого чата, а с команды: «прочитай капсулу FT-042 и выполни следующий шаг».</p>
+<h3>2. Проверка переходов</h3>
+<p>CLI или CI проверяет:</p>
+<ul>
+<li>наличие обязательных артефактов;</li>
+<li>допустимость перехода;</li>
+<li>статусы и обязательные поля;</li>
+<li>связи требований, сценариев, тестов и кода;</li>
+<li>наличие evidence;</li>
+<li>stop conditions.</li>
+</ul>
+<p>Если контракт не выполнен, система должна вернуть диагностируемую ошибку и понятный следующий шаг. Тогда агент может исправить результат, а не угадывать причину отказа.</p>
+<h3>3. Runtime-оркестратор</h3>
+<p>Temporal или аналогичный инструмент становится оправданным, когда появляются долгие ожидания, retries, timers, параллельные роли, очереди и автоматическое восстановление после падений.</p>
+<p>До этого момента отдельная оркестрационная платформа может дать больше сложности, чем пользы.</p>
+<h2>Где заканчивается автоматизация</h2>
+<p>Я бы жёстко разделил две зоны.</p>
+<p>Детерминированными должны быть:</p>
+<ul>
+<li>routing задачи;</li>
+<li>обязательные артефакты;</li>
+<li>переходы между стадиями;</li>
+<li>структурные проверки;</li>
+<li>запись evidence;</li>
+<li>условия остановки.</li>
+</ul>
+<p>LLM полезна там, где нужны:</p>
+<ul>
+<li>анализ неоднозначной задачи;</li>
+<li>варианты решения;</li>
+<li>проектирование;</li>
+<li>реализация;</li>
+<li>объяснение найденных рисков.</li>
+</ul>
+<p>Иначе мы просим вероятностную модель управлять тем, что можно выразить обычным контрактом.</p>
+<h2>Главный принцип</h2>
+<p>Для долгой агентной работы не нужно сохранять каждую реплику. Нужно сохранять контекст задачи, принятые решения, результаты проверок и следующий шаг.</p>
+<p>Поэтому моя формула «бесконечной сессии» выглядит так:</p>
+<pre lang="text" class="notranslate"><code class="notranslate">короткие сессии
++ долговечное состояние задачи
++ проверяемые handoff-контракты
++ воспроизводимые доказательства
+= непрерывный агентный процесс
+</code></pre>
+<p>В следующей статье я разберу второй слой такой системы — Code Property Graph: как дать агенту не только документы о задаче, но и карту структуры, вызовов и потоков данных внутри самого кода.</p>
+<p>Источник исходной идеи: <a href="https://app.mymeet.ai/ru/public-meetings/ab134fa3-e164-4e5a-89f0-c8530cfde37d" rel="nofollow">доклад Михаила Савина «Детерминированный AI-SDLC на 1,5 млн строк — как не утонуть в техдолге»</a>, <a href="https://codegraph.ru/whitepaper.html" rel="nofollow">whitepaper CodeGraph</a>.</p>
+      </article>
+    </main>
+    <footer class="article-footer">
+      <p><a href="/articles/">← Все статьи</a></p>
+      <p>Об агентной разработке и автоматизации процессов. Связаться: <a href="mailto:danil@brandymint.ru">danil@brandymint.ru</a>.</p>
+    </footer>
+  </section>
+</body>
+</html>

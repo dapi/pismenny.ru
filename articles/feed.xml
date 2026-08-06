@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Агентная разработка и автоматизация процессов — Данил Письменный</title>
+  <link href="https://pismenny.ru/articles/feed.xml" rel="self"/>
+  <link href="https://pismenny.ru/articles/"/>
+  <id>https://pismenny.ru/articles/</id>
+  <updated>2026-08-06T00:00:00+05:00</updated>
+  <author><name>Данил Письменный</name></author>
+  <entry>
+    <title>«Бесконечная» сессия AI-агента — это не бесконечный контекст</title>
+    <link href="https://pismenny.ru/articles/infinite-agent-session.html"/>
+    <id>https://pismenny.ru/articles/infinite-agent-session.html</id>
+    <updated>2026-08-06T00:00:00+05:00</updated>
+    <summary>Почему для долгой агентной работы нужно сохранять состояние задачи, handoff-контракты и доказательства, а не весь чат.</summary>
+  </entry>
+  <entry>
+    <title>Почему grep недостаточно AI-агенту: Code Property Graph простыми словами</title>
+    <link href="https://pismenny.ru/articles/code-property-graph.html"/>
+    <id>https://pismenny.ru/articles/code-property-graph.html</id>
+    <updated>2026-08-06T00:00:00+05:00</updated>
+    <summary>Как AST, CFG, call graph, data flow и граф зависимостей помогают агенту видеть код как систему связей.</summary>
+  </entry>
+</feed>
