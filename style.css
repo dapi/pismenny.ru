@@ -104,15 +104,26 @@ footer .copyright {
   margin: 24px 0 30px;
 }
 
-.photo__block {
-  float: left;
-  margin-top: 72px;
-  margin-right: 50px;
-}
-
 header {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 50px;
   padding-left: 40px;
   padding-bottom: 10px;
+}
+
+.photo__block {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  margin: 0;
+}
+
+header h1,
+header > p {
+  grid-column: 2;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 nav.nav--links ul li {
@@ -183,6 +194,8 @@ section {
 
 @media screen and (max-width: 467px) {
   .photo__block {
+    grid-column: auto;
+    grid-row: auto;
     float: none;
     margin: 0 0 30px 0;
   }
@@ -192,6 +205,7 @@ section {
   }
 
   header {
+    display: block;
     padding: 18px;
   }
 
