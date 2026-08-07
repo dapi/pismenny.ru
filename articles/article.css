@@ -71,16 +71,31 @@
   margin-bottom: 1.5rem;
 }
 
-.draft-label {
+.draft-label,
+.article-type-label,
+.article-basis-label {
   display: inline-block;
   padding: 0.12rem 0.45rem;
-  border: 1px solid #d85b45;
   border-radius: 999px;
-  color: #b64938;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.draft-label {
+  border: 1px solid #d85b45;
+  color: #b64938;
+}
+
+.article-type-label {
+  border: 1px solid #6b9ed2;
+  color: #245d98;
+}
+
+.article-basis-label {
+  border: 1px solid #9aa5b4;
+  color: #536174;
 }
 
 .article-deck {
