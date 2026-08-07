@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Мультиплексоры для вайб-кодеров: Terminal, cmux, SSH и tmux — Данил Письменный</title>
+  <meta name="description" content="Как не потеряться между вкладками, рабочими пространствами и серверами — и оставить coding agents работать после закрытия ноутбука или обрыва SSH.">
+  <meta name="author" content="Данил Письменный">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="googlebot" content="noindex,nofollow,noarchive">
+  <link rel="canonical" href="https://pismenny.ru/articles/multiplexers-for-vibe-coders.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:url" content="https://pismenny.ru/articles/multiplexers-for-vibe-coders.html">
+  <meta property="og:title" content="Мультиплексоры для вайб-кодеров: Terminal, cmux, SSH и tmux">
+  <meta property="og:description" content="Как не потеряться между вкладками, рабочими пространствами и серверами — и оставить coding agents работать после закрытия ноутбука или обрыва SSH.">
+  <meta property="og:image" content="https://pismenny.ru/articles/assets/multiplexers-for-vibe-coders-hero.png">
+  <meta property="og:image:alt" content="Вложенные рабочие контейнеры соединены с якорем удалённой сессии, внутри которой продолжают работать два агента">
+  <meta property="article:published_time" content="2026-08-07T00:00:00+05:00">
+  <meta property="article:modified_time" content="2026-08-07T00:00:00+05:00">
+  <meta property="article:author" content="Данил Письменный">
+  <meta property="article:section" content="Агентная разработка">
+  <meta name="article:type" content="guide">
+  <meta name="article:content_basis" content="author_experience,author_analysis,research_synthesis">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Мультиплексоры для вайб-кодеров: Terminal, cmux, SSH и tmux">
+  <meta name="twitter:description" content="Как не потеряться между вкладками, рабочими пространствами и серверами — и оставить coding agents работать после закрытия ноутбука или обрыва SSH.">
+  <meta name="twitter:image" content="https://pismenny.ru/articles/assets/multiplexers-for-vibe-coders-hero.png">
+  <meta name="twitter:image:alt" content="Вложенные рабочие контейнеры соединены с якорем удалённой сессии, внутри которой продолжают работать два агента">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=9123257">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=9123257">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=9123257">
+  <link rel="preload" as="image" href="assets/multiplexers-for-vibe-coders-hero.png" type="image/png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yegor256/tacit@gh-pages/tacit-css-1.3.9.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="article.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Мультиплексоры для вайб-кодеров: Terminal, cmux, SSH и tmux",
+    "description": "Как не потеряться между вкладками, рабочими пространствами и серверами — и оставить coding agents работать после закрытия ноутбука или обрыва SSH.",
+    "datePublished": "2026-08-07",
+    "dateModified": "2026-08-07",
+    "inLanguage": "ru",
+    "articleSection": "Агентная разработка",
+    "url": "https://pismenny.ru/articles/multiplexers-for-vibe-coders.html",
+    "mainEntityOfPage": "https://pismenny.ru/articles/multiplexers-for-vibe-coders.html",
+    "image": "https://pismenny.ru/articles/assets/multiplexers-for-vibe-coders-hero.png",
+    "author": {"@type": "Person", "name": "Данил Письменный", "url": "https://pismenny.ru/"}
+  }
+  </script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#article-content">К статье</a>
+  <section class="article-shell">
+    <nav class="article-nav" aria-label="Навигация">
+      <a href="/">Данил Письменный</a>
+      <a href="/articles/">Все статьи</a>
+    </nav>
+    <main id="article-content">
+      <article class="longread">
+        <h1>Мультиплексоры для вайб-кодеров: Terminal, cmux, SSH и tmux</h1>
+        <p class="article-meta"><span class="article-author">Данил Письменный</span> · <span class="draft-label">Черновик</span> · <span class="article-type-label">Практический гайд</span> · <span class="article-basis-label">Из практики</span> · <time datetime="2026-08-07">7 августа 2026</time> · 17 минут чтения</p>
+        <p class="article-deck">Как не потеряться между вкладками, рабочими пространствами и серверами — и оставить coding agents работать после закрытия ноутбука или обрыва SSH.</p>
+        <figure class="article-hero">
+          <img src="assets/multiplexers-for-vibe-coders-hero.png" alt="Вложенные рабочие контейнеры соединены с якорем удалённой сессии, внутри которой продолжают работать два агента" width="1200" height="630">
+        </figure>
+<p>Когда агент один, всё просто: открыл Terminal, перешёл в проект, запустил Codex или Claude Code. Когда агентов становится несколько, на экране быстро появляются одинаковые чёрные вкладки. В одной агент ждёт разрешения, в другой завершил тесты, в третьей открыт уже не тот проект, а ещё одна вообще ведёт на удалённый сервер.</p>
+<p>Я проходил через это в собственной агентной разработке. В моём раннем workflow роль диспетчерской выполнял zellij: одна вкладка на задачу, одна сессия агента на вкладку, отдельный git worktree для изоляции файлов. Инструменты меняются, но проблема остаётся: нужно одновременно <strong>видеть несколько работ</strong>, <strong>не путать их контекст</strong> и <strong>не терять долгий процесс из-за разорванного соединения</strong>.</p>
+<p>Главная ошибка — назвать всё это «мультиплексорами» и представить как четыре одинаковых уровня. Terminal, cmux, SSH и tmux решают разные задачи.</p>
+<p><strong>Тезис статьи:</strong> надёжность даёт не один «лучший мультиплексор», а разделение ответственности. Terminal или cmux организует локальный обзор, shell и <code>cwd</code> задают файловый контекст, SSH переносит ввод и вывод между машинами, а удалённый tmux хранит серверную сессию независимо от подключённого клиента.</p>
+<p>В этой статье мы соберём рабочий маршрут для Mac:</p>
+<pre lang="text" class="notranslate"><code class="language-text">локальное приложение → shell и текущая директория → SSH → удалённый tmux → Codex / Claude Code
+</code></pre>
+<p>После этого маршрута вы сможете понять, где сейчас находитесь, что именно принимает ваш ввод, какой слой нужно добавить и как вернуться в живую удалённую сессию.</p>
+<p>Исходные условия: Mac с Terminal.app или cmux; для удалённой части — уже настроенный SSH-доступ, установленный на сервере tmux и авторизованный Codex либо Claude Code на той машине, где агент будет выполняться. Установку и защиту сервера этот гайд намеренно не заменяет.</p>
+<h2>Короткий ответ: это не четыре одинаковых мультиплексора</h2>
+<p>Вот роли без лишней терминологии.</p>
+<p class="table-scroll-hint">Таблицу можно прокрутить по горизонтали.</p>
+<section class="table-scroll" aria-label="Роли Terminal, cmux, shell, SSH, tmux и агентов" tabindex="0"><table>
+<thead>
+<tr>
+<th>Слой</th>
+<th>Что это</th>
+<th>Что он сохраняет или организует</th>
+<th>Чего он не гарантирует</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Terminal.app</strong></td>
+<td>Стандартное терминальное приложение macOS</td>
+<td>Локальные окна и вкладки с shell</td>
+<td>Продолжение вычислений, пока Mac спит, выключен или перезагружен</td>
+</tr>
+<tr>
+<td><strong>cmux</strong></td>
+<td>Альтернативное нативное терминальное приложение для macOS</td>
+<td>Workspaces, panes, surfaces, статусы, уведомления и локальную компоновку</td>
+<td>Снимок памяти любого произвольного процесса</td>
+</tr>
+<tr>
+<td><strong>shell</strong></td>
+<td>Интерпретатор команд, обычно zsh на современном Mac</td>
+<td>Текущую директорию и окружение конкретной сессии</td>
+<td>Сохранение работы после завершения своего процесса</td>
+</tr>
+<tr>
+<td><strong>SSH</strong></td>
+<td>Защищённое соединение с другой машиной</td>
+<td>Канал между локальным терминалом и удалённым shell</td>
+<td>Самостоятельную жизнь удалённой интерактивной сессии после разрыва канала</td>
+</tr>
+<tr>
+<td><strong>tmux</strong></td>
+<td>Терминальный мультиплексор, работающий на удалённой машине</td>
+<td>Серверные sessions, windows и panes независимо от подключённого клиента</td>
+<td>Переживание перезагрузки сервера или падения самого процесса агента</td>
+</tr>
+<tr>
+<td><strong>Codex / Claude Code</strong></td>
+<td>Агентные программы, запущенные из shell</td>
+<td>Собственную беседу и работу в пределах возможностей конкретного продукта</td>
+<td>Роль shell, SSH или универсального менеджера процессов</td>
+</tr>
+</tbody></table></section>
+<p><strong>Проверенный факт:</strong> cmux и tmux находятся на разных уровнях. cmux — приложение macOS с GUI, терминалами и рабочими пространствами. tmux запускается <em>внутри</em> терминала, а его фоновый server хранит сессии на той машине, где был запущен tmux.</p>
+<p><strong>Практический вывод:</strong> не нужно выбирать одного победителя между cmux и tmux. Полезная комбинация выглядит так: cmux организует работу на Mac, а tmux даёт явную и переносимую границу жизни процесса на сервере.</p>
+<figure class="article-diagram">
+  <img src="assets/multiplexers-for-vibe-coders-diagram-architecture.png" alt="Вложенная архитектура от Mac и cmux до SSH, удалённого tmux и агентных сессий" width="1200" height="2442" loading="lazy" decoding="async">
+  <figcaption>Диаграмма 1. Внутри cmux работает не приложение Terminal.app, а терминальная поверхность с shell. SSH выводит нас за границу Mac, а tmux уже живёт на удалённом сервере.</figcaption>
+</figure>
+<h2>Терминальный минимум: директория важнее красивого окна</h2>
+<p>Terminal и cmux показывают терминал. Команды принимает не картинка окна, а запущенный внутри <strong>shell</strong>. На Mac это чаще всего zsh.</p>
+<p>У каждого shell есть <strong>current working directory</strong>, или <code>cwd</code>: директория, относительно которой выполняются команды. Две соседние вкладки могут выглядеть одинаково, но находиться в разных проектах.</p>
+<p>Пять команд закрывают базовую навигацию:</p>
+<pre lang="sh" class="notranslate"><code class="language-sh">pwd
+ls
+cd ~/code/my-project
+cd ..
+cd ~
+</code></pre>
+<ul>
+<li><code>pwd</code> печатает полный путь текущей директории;</li>
+<li><code>ls</code> показывает её содержимое;</li>
+<li><code>cd ПУТЬ</code> переходит в другую директорию;</li>
+<li><code>cd ..</code> поднимается на уровень выше;</li>
+<li><code>cd ~</code> возвращает в домашнюю директорию.</li>
+</ul>
+<p>Если в имени есть пробел, путь нужно заключить в кавычки:</p>
+<pre lang="sh" class="notranslate"><code class="language-sh">cd &quot;My Project&quot;
+</code></pre>
+<p>Безопасная привычка перед запуском агента:</p>
+<pre lang="sh" class="notranslate"><code class="language-sh">cd ~/code/my-project
+pwd
+ls
+codex
+</code></pre>
+<p>Или вместо Codex:</p>
+<pre lang="sh" class="notranslate"><code class="language-sh">cd ~/code/my-project
+pwd
+ls
+claude
+</code></pre>
+<p>Codex и Claude Code запускаются из текущей директории и используют её как исходный контекст работы. Точные права доступа зависят от настроек агента, но неверный <code>cwd</code> уже на старте направляет его не в тот проект.</p>
+<h3>Команда shell и инструкция агенту — разный ввод</h3>
+<p>Это одна и та же клавиатура, но два разных адресата.</p>
+<p class="table-scroll-hint">Таблицу можно прокрутить по горизонтали.</p>
+<section class="table-scroll" aria-label="Shell и агент как адресаты ввода" tabindex="0"><table>
+<thead>
+<tr>
+<th>Где находится курсор</th>
+<th>Кто читает ввод</th>
+<th>Что означает <code>pwd</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>В обычной строке shell, до запуска агента</td>
+<td>zsh или другой shell</td>
+<td>Немедленно выполнить системную команду <code>pwd</code></td>
+</tr>
+<tr>
+<td>В интерфейсе Codex или Claude Code</td>
+<td>Агент</td>
+<td>Текст запроса; агент может решить вызвать shell, объяснить команду или задать вопрос</td>
+</tr>
+</tbody></table></section>
+<p>Сначала shell получает команду <code>codex</code> или <code>claude</code> и запускает программу. После запуска уже агент получает фразы вроде:</p>
+<pre lang="text" class="notranslate"><code class="language-text">Прочитай README, объясни устройство проекта и ничего пока не меняй.
+</code></pre>
+<p>Это <strong>инструкция агенту</strong>, а не команда shell.</p>
+<p>Чтобы вернуться из текущих версий CLI в shell, в Codex можно ввести <code>/exit</code> или <code>/quit</code>. В Claude Code штатный выход — <code>Ctrl+D</code> дважды с пустой строкой ввода. Интерфейсы развиваются, поэтому встроенная подсказка конкретной версии остаётся авторитетнее статьи.</p>
+<p>Наблюдаемый результат простой: снова появился обычный shell prompt, и <code>pwd</code> выполняется напрямую.</p>
+<h2>Уровень 1. Вкладки Terminal: достаточно для начала</h2>
+<p>В стандартном Terminal на Mac <code>⌘T</code> создаёт новую вкладку. В ней запускается новый shell со своей текущей директорией и своими процессами.</p>
+<p>Рабочая схема может быть совсем простой:</p>
+<pre lang="text" class="notranslate"><code class="language-text">вкладка 1 → проект A → Codex
+вкладка 2 → проект B → Claude Code
+вкладка 3 → логи или тесты
+</code></pre>
+<p>Этого достаточно, если одновременно идут одна-две локальные задачи, вы легко различаете вкладки и Mac остаётся рабочей машиной, на которой должны выполняться процессы.</p>
+<p><strong>Практическое ограничение:</strong> дело не в «слабости» Terminal. Вкладки почти не дают предметной модели агентной работы: задача, ветка, директория и состояние агента остаются в вашей голове. Кроме того, локальная вкладка не обещает, что вычисление будет продолжаться во время sleep, завершения приложения или перезагрузки Mac.</p>
+<p><strong>Условие остановки:</strong> не добавляйте cmux или tmux только потому, что они популярны. Пока вы без ошибок находите нужную задачу и вам не нужна независимая жизнь процесса, вкладок Terminal достаточно.</p>
+<h2>Уровень 2. cmux: локальная диспетчерская</h2>
+<p>cmux — не плагин для Terminal.app и не tmux с красивой темой. Это отдельное нативное приложение macOS, использующее libghostty для отрисовки терминала.</p>
+<p>В текущей модели cmux:</p>
+<pre lang="text" class="notranslate"><code class="language-text">window
+└── workspace
+    ├── pane
+    │   ├── surface 1: terminal
+    │   └── surface 2: browser
+    └── pane
+        └── surface: terminal
+</code></pre>
+<p>Workspaces видны в боковой панели. Для них cmux показывает рабочую директорию, git branch, открытые порты и уведомления. Внутри workspace можно делить экран на panes, а surfaces работают как вкладки внутри pane.</p>
+<p>Минимальный набор стандартных клавиш:</p>
+<p class="table-scroll-hint">Таблицу можно прокрутить по горизонтали.</p>
+<section class="table-scroll" aria-label="Стандартные сочетания клавиш cmux" tabindex="0"><table>
+<thead>
+<tr>
+<th>Действие</th>
+<th>Клавиши cmux</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Новый workspace</td>
+<td><code>⌘N</code></td>
+</tr>
+<tr>
+<td>Перейти к workspace 1–9</td>
+<td><code>⌘1</code> … <code>⌘9</code></td>
+</tr>
+<tr>
+<td>Новая surface</td>
+<td><code>⌘T</code></td>
+</tr>
+<tr>
+<td>Разделить pane вправо</td>
+<td><code>⌘D</code></td>
+</tr>
+<tr>
+<td>Разделить pane вниз</td>
+<td><code>⌘⇧D</code></td>
+</tr>
+<tr>
+<td>Показать или скрыть левую панель</td>
+<td><code>⌘B</code></td>
+</tr>
+<tr>
+<td>Перейти к последнему непрочитанному уведомлению</td>
+<td><code>⌘⇧U</code></td>
+</tr>
+</tbody></table></section>
+<p>Сочетания настраиваются, поэтому эта таблица описывает defaults, проверенные на момент написания, а не вечный стандарт.</p>
+<h3>Моя рабочая модель: один workspace — одна задача</h3>
+<p>Это не требование cmux, а авторский способ снизить путаницу:</p>
+<pre lang="text" class="notranslate"><code class="language-text">workspace = где я наблюдаю задачу
+cwd       = с какими файлами работает shell и агент
+worktree  = какая изолированная копия репозитория изменяется
+</code></pre>
+<p>В моём раннем workflow ту же роль визуального контейнера выполняла вкладка zellij. Инвариант полезнее конкретного продукта: <strong>одна видимая ячейка работы должна иметь одну понятную задачу и одну директорию</strong>.</p>
+<p>Наблюдаемый эффект в моей работе был качественным, а не измеренным: стало проще связать видимый терминал с задачей и рабочим деревом. Это опыт одного workflow, а не доказательство, что такая схема быстрее для всех или что cmux обязательно лучше другой диспетчерской.</p>
+<p>Git worktree — не терминальная вкладка и не мультиплексор. Он позволяет одному репозиторию иметь несколько рабочих деревьев и держать разные ветки в разных директориях. Если два агента параллельно меняют один checkout, дополнительные вкладки лишь делают конфликт менее заметным. Изоляция файлов — отдельная задача.</p>
+<h3>Что именно восстанавливает cmux</h3>
+<p>Текущий cmux умеет восстановить окна, workspaces, panes, рабочие директории, браузерное состояние и scrollback. Для поддерживаемых агентов он может через hooks сохранить native session ID и запустить собственную команду возобновления агента.</p>
+<p>Но документация cmux отдельно предупреждает: приложение <strong>не делает checkpoint произвольной памяти процесса</strong>. Восстановленная картинка терминала и продолжающий работать процесс — не одно и то же.</p>
+<p>Отсюда два разных случая:</p>
+<ol>
+<li>Нужно вернуть локальную компоновку и поддерживаемую беседу агента — помогает session restore cmux.</li>
+<li>Нужно, чтобы произвольный процесс продолжал жить на удалённой машине независимо от локального приложения — нужна серверная граница вроде tmux или другого process supervisor.</li>
+</ol>
+<h2>Уровень 3. SSH: мост на другую машину</h2>
+<p>SSH-клиент подключает локальный терминал к удалённой машине по защищённому каналу:</p>
+<pre lang="sh" class="notranslate"><code class="language-sh">ssh user@server.example
+</code></pre>
+<p>После успешного входа shell prompt уже принадлежит серверу. Выполните проверку заново:</p>
+<pre lang="sh" class="notranslate"><code class="language-sh">pwd
+ls
+</code></pre>
+<p>Локальная директория <code>~/code/my-project</code> и удалённая директория с таким же написанием — разные места на разных машинах. SSH не переносит ваш <code>cwd</code> автоматически.</p>
+<p>При первом подключении SSH может показать fingerprint ключа хоста. Не подтверждайте незнакомый fingerprint вслепую: сравните его со значением от администратора сервера или из доверенного канала.</p>
+<p>Если интерактивное соединение зависло и обычный ввод не работает, OpenSSH поддерживает escape-последовательность: нажмите <code>Enter</code>, затем в начале новой строки введите <code>~.</code>. Она закрывает клиентское соединение. Это аварийный выход, а не команда удалённого shell.</p>
+<p>Главное ограничение: SSH — канал, а не хранитель интерактивного процесса. При обычном запуске агента прямо в удалённом shell его терминал связан с SSH-сеансом. Для предсказуемого восстановления нужен следующий слой.</p>
+<h3>А что насчёт встроенного SSH в cmux</h3>
+<p>В актуальной версии есть команда:</p>
+<pre lang="sh" class="notranslate"><code class="language-sh">cmux ssh user@server.example --name &quot;Agent server&quot;
+</code></pre>
+<p>cmux создаёт удалённый workspace, умеет переподключаться после обрыва и сохраняет свою remote session. Поэтому утверждение «без tmux любой краткий обрыв обязательно уничтожит процесс» для современного cmux уже слишком сильное.</p>
+<p><strong>Мой вывод:</strong> tmux всё равно полезен, когда нужна явная серверная сессия, которую можно увидеть через <code>tmux ls</code> и открыть не только из cmux, но и из Terminal, другого ноутбука или обычного SSH-клиента. Это переносимость и независимая граница ответственности, а не обязательная дань традиции.</p>
+<h2>Уровень 4. tmux: сессия остаётся на сервере</h2>
+<p>tmux состоит из фонового server и подключаемых clients. Server хранит sessions. В session находятся windows, а в window — panes с терминалами и программами.</p>
+<p>Для первого запуска достаточно такого маршрута:</p>
+<pre lang="sh" class="notranslate"><code class="language-sh">ssh user@server.example
+cd ~/code/my-project
+tmux new -s agents
+codex
+</code></pre>
+<p>Или запустите внутри tmux Claude Code:</p>
+<pre lang="sh" class="notranslate"><code class="language-sh">claude
+</code></pre>
+<p>Теперь Codex или Claude Code работает в pane сессии <code>agents</code> на удалённом сервере.</p>
+<p>Чтобы <strong>отсоединиться, но не завершить работу</strong>, нажмите последовательность:</p>
+<pre lang="text" class="notranslate"><code class="language-text">Ctrl+b, отпустить, затем d
+</code></pre>
+<p>В документации tmux это записывается как <code>C-b d</code>. Это не одновременное нажатие трёх клавиш: сначала prefix <code>Ctrl+b</code>, затем отдельная клавиша <code>d</code>.</p>
+<p>После обрыва связи или намеренного detach вернитесь так:</p>
+<pre lang="sh" class="notranslate"><code class="language-sh">ssh user@server.example
+tmux ls
+tmux attach -t agents
+</code></pre>
+<p>Наблюдаемый результат: вы снова видите тот же window, тот же pane и продолжающийся или ожидающий ввода процесс.</p>
+<figure class="article-diagram">
+  <img src="assets/multiplexers-for-vibe-coders-diagram-lifecycle.png" alt="Жизненный цикл удалённой tmux-сессии от обрыва SSH до повторного подключения" width="1200" height="3233" loading="lazy" decoding="async">
+  <figcaption>Диаграмма 2. Обрывается клиентское соединение. tmux server и программы остаются на удалённой машине, если сама машина и процессы продолжают работать.</figcaption>
+</figure>
+<h3>Что переживает tmux, а что нет</h3>
+<p>tmux защищает от закрытого локального окна и разрыва SSH, но это не система бессмертия.</p>
+<p>Сессия продолжится, если:</p>
+<ul>
+<li>удалённый сервер не выключен и не перезагружен;</li>
+<li>tmux server не завершён;</li>
+<li>shell и агентный процесс сами не упали и не были остановлены;</li>
+<li>аккаунт не ограничен внешней системой управления ресурсами.</li>
+</ul>
+<p>tmux не гарантирует, что агент делает полезную работу. Он может ждать разрешения, исчерпать лимит, потерять доступ к внешнему сервису или завершиться с ошибкой. tmux сохраняет <strong>процесс и терминальный контекст</strong>, а не качество результата.</p>
+<p>Если после подключения <code>tmux ls</code> не показывает нужную сессию, не пытайтесь «attach ещё сильнее». Проверьте, тот ли это сервер и пользователь, не было ли reboot и не завершились ли все windows сессии.</p>
+<h2>Минимальный безопасный набор клавиш tmux</h2>
+<p>Ниже — defaults tmux. Пользовательская конфигурация может их изменить.</p>
+<p class="table-scroll-hint">Таблицу можно прокрутить по горизонтали.</p>
+<section class="table-scroll" aria-label="Безопасные сочетания клавиш tmux" tabindex="0"><table>
+<thead>
+<tr>
+<th>Последовательность</th>
+<th>Результат</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>C-b ?</code></td>
+<td>Показать список клавиш</td>
+</tr>
+<tr>
+<td><code>C-b d</code></td>
+<td>Отсоединиться от сессии, оставив процессы работать</td>
+</tr>
+<tr>
+<td><code>C-b c</code></td>
+<td>Создать новый window</td>
+</tr>
+<tr>
+<td><code>C-b n</code></td>
+<td>Перейти к следующему window</td>
+</tr>
+<tr>
+<td><code>C-b p</code></td>
+<td>Перейти к предыдущему window</td>
+</tr>
+<tr>
+<td><code>C-b 0</code> … <code>C-b 9</code></td>
+<td>Перейти к window по номеру</td>
+</tr>
+<tr>
+<td><code>C-b %</code></td>
+<td>Разделить window на panes слева и справа</td>
+</tr>
+<tr>
+<td><code>C-b &quot;</code></td>
+<td>Разделить window на panes сверху и снизу</td>
+</tr>
+<tr>
+<td><code>C-b</code> + стрелка</td>
+<td>Перевести фокус в соседний pane</td>
+</tr>
+<tr>
+<td><code>C-b o</code></td>
+<td>Перейти к следующему pane</td>
+</tr>
+</tbody></table></section>
+<p>Для начала этого достаточно. Намеренно не запоминайте команды уничтожения pane, window и session, пока не привыкнете отличать <strong>detach</strong> от <strong>close</strong>.</p>
+<p>Особенно осторожно с <code>exit</code>. В обычном удалённом shell команда закрывает SSH-сеанс. В shell внутри tmux она завершает текущий shell; pane может закрыться, а вместе с последним pane закончится и session. Чтобы оставить работу на сервере, используйте <code>C-b d</code>, а не <code>exit</code>.</p>
+<h2>Полный сценарий восстановления</h2>
+<p>Предположим, агент выполняет долгую задачу на сервере.</p>
+<h3>1. Подключиться и создать именованную сессию</h3>
+<pre lang="sh" class="notranslate"><code class="language-sh">ssh user@server.example
+cd ~/code/my-project
+tmux new -s agents
+</code></pre>
+<h3>2. Запустить агента</h3>
+<pre lang="sh" class="notranslate"><code class="language-sh">codex
+</code></pre>
+<p>Дайте агенту конкретную инструкцию и убедитесь, что работа действительно началась.</p>
+<h3>3. Уйти намеренно</h3>
+<p>Нажмите <code>C-b d</code>. Вы окажетесь в обычном удалённом shell. Затем можно завершить SSH:</p>
+<pre lang="sh" class="notranslate"><code class="language-sh">exit
+</code></pre>
+<h3>4. Пережить ненамеренный обрыв</h3>
+<p>Если Wi‑Fi пропал или ноутбук закрылся до detach, отдельного действия не требуется. tmux session станет detached, когда client исчезнет.</p>
+<h3>5. Вернуться</h3>
+<pre lang="sh" class="notranslate"><code class="language-sh">ssh user@server.example
+tmux ls
+tmux attach -t agents
+</code></pre>
+<h3>6. Проверить не только экран, но и результат</h3>
+<p>После восстановления спросите агента о состоянии, посмотрите <code>git status</code>, тесты и созданные артефакты. Живой терминал доказывает только то, что сессия сохранилась.</p>
+<h2>Что выбрать: Terminal tabs, cmux workspace или remote tmux</h2>
+<figure class="article-diagram">
+  <img src="assets/multiplexers-for-vibe-coders-diagram-choice.png" alt="Карта выбора между вкладками Terminal, workspace cmux и удалённой tmux-сессией" width="1200" height="3310" loading="lazy" decoding="async">
+  <figcaption>Диаграмма 3. Выбор начинается не с бренда инструмента, а с границы ответственности: достаточно ли локальных окон, нужна ли диспетчерская контекстов или процесс должен иметь независимую серверную сессию.</figcaption>
+</figure>
+<p>Практическое правило:</p>
+<ul>
+<li><strong>Terminal tabs</strong> — одна-две локальные задачи, всё различимо, продолжение после закрытия Mac не требуется.</li>
+<li><strong>cmux workspace</strong> — много локальных или удалённых задач, нужны видимые директории, ветки, panes и уведомления.</li>
+<li><strong>remote tmux</strong> — процесс должен иметь явную серверную сессию и быть доступен после обрыва из разных терминальных клиентов.</li>
+<li><strong>cmux + SSH + tmux</strong> — нужна и локальная диспетчерская, и переносимая серверная непрерывность.</li>
+</ul>
+<p>Это не лестница обязательной сложности. Иногда правильный ответ — только Terminal. Иногда cmux SSH уже закрывает задачу переподключения. Иногда tmux запускают даже из простой вкладки Terminal, потому что GUI вообще не важен.</p>
+<h2>Семь типичных ошибок</h2>
+<h3>1. «cmux запускает внутри себя Terminal.app»</h3>
+<p>Нет. Terminal.app и cmux — отдельные приложения. cmux создаёт собственные terminal surfaces на базе libghostty.</p>
+<h3>2. «Workspace cmux и git worktree — одно и то же»</h3>
+<p>Нет. Workspace организует интерфейс. Worktree изолирует файлы и ветку. Для параллельных агентов часто нужны оба, но по разным причинам.</p>
+<h3>3. «SSH сохраняет удалённую работу»</h3>
+<p>SSH создаёт канал. Непрерывность даёт удалённый tmux, process supervisor или специальный механизм remote session конкретного клиента.</p>
+<h3>4. «Закрыть окно tmux — то же самое, что detach»</h3>
+<p>Нет. Безопасное действие для продолжения работы — <code>C-b d</code>. Закрытие последнего shell может завершить сессию.</p>
+<h3>5. «tmux переживёт reboot сервера»</h3>
+<p>Обычный tmux хранит состояние в процессах и памяти работающей машины. После reboot нужна отдельная стратегия восстановления задач и состояния.</p>
+<h3>6. «Если я вижу строку ввода, она принимает shell-команды»</h3>
+<p>Сначала определите адресата. В shell <code>ls</code> — команда. В агенте <code>ls</code> — текст инструкции, который продукт обработает по своим правилам.</p>
+<h3>7. «Пять вкладок позволяют пяти агентам безопасно править один checkout»</h3>
+<p>Вкладки дают параллельность экранов, но не изоляцию файлов. Для независимых задач используйте отдельные репозитории, worktrees или другой осознанный способ разделить рабочие деревья.</p>
+<h2>Где заканчивается этот гайд</h2>
+<p>Статья намеренно не покрывает:</p>
+<ul>
+<li>установку и hardening удалённого сервера;</li>
+<li>управление SSH-ключами и сложный <code>~/.ssh/config</code>;</li>
+<li>настройку tmux, плагины и замену prefix;</li>
+<li>Mosh, systemd, launchd, containers и job schedulers;</li>
+<li>подробный workflow git worktrees;</li>
+<li>безопасность unattended-агентов и автоматическое подтверждение действий.</li>
+</ul>
+<p>Технические команды и свойства проверены 7 августа 2026 года на macOS 26.5.1 с cmux 0.64.22, tmux 3.6a, OpenSSH 10.2p1, Codex CLI 0.147.0 и Claude Code 2.1.221. Базовые shell-команды и жизненный цикл tmux проверены в изолированном временном каталоге и отдельном tmux socket. Подключение к конкретному боевому серверу и реальный долгий запуск агента через sleep ноутбука не выполнялись: эти детали зависят от SSH, ОС, политик и конфигурации выбранного сервера.</p>
+<h2>Итог</h2>
+<p>Хорошая терминальная система начинается не с количества вкладок, а с ясных границ:</p>
+<pre lang="text" class="notranslate"><code class="language-text">Terminal или cmux отвечает: где я смотрю?
+shell и cwd отвечают: с какими файлами я работаю?
+SSH отвечает: к какой машине я подключён?
+tmux отвечает: что продолжит жить без этого подключения?
+Codex или Claude Code отвечает: какую задачу выполняет агент?
+</code></pre>
+<p>Начните с вкладок Terminal. Когда задач станет слишком много для памяти — добавьте cmux. Когда процесс должен жить на сервере независимо от ноутбука и конкретного клиента — добавьте tmux.</p>
+<p>Не мультиплексируйте хаос. Сначала назовите слой, задачу и директорию — и только затем размножайте сессии.</p>
+<h2>Источники и границы синтеза</h2>
+<p>Это практический гайд, а не полный обзор терминальных систем. Авторская часть основана на моём workflow «одна видимая вкладка или workspace на задачу, отдельная сессия агента и отдельный worktree для параллельной разработки». Техническая часть сверена со следующими первичными материалами:</p>
+<ol>
+<li><a href="https://support.apple.com/guide/terminal/open-new-terminal-windows-and-tabs-trmlb20c7888/mac" target="_blank" rel="noopener noreferrer">Apple Terminal User Guide — Open new Terminal windows and tabs</a> — стандартные окна, вкладки и <code>⌘T</code>.</li>
+<li><a href="https://support.apple.com/guide/terminal/execute-commands-and-run-tools-apdb66b5242-0d18-49fc-9c47-a2498b7c91d5/mac" target="_blank" rel="noopener noreferrer">Apple Terminal User Guide — Execute commands and run tools</a> и <a href="https://support.apple.com/guide/terminal/specify-files-and-folders-apd3cf6fe02-3ec8-48f1-951f-866e52955fc8/mac" target="_blank" rel="noopener noreferrer">Specify files and folders</a> — shell-команды, пути и директории.</li>
+<li><a href="https://cmux.com/" target="_blank" rel="noopener noreferrer">cmux — официальный сайт</a>, <a href="https://cmux.com/docs/keyboard-shortcuts" target="_blank" rel="noopener noreferrer">Keyboard Shortcuts</a>, <a href="https://cmux.com/docs/ssh" target="_blank" rel="noopener noreferrer">SSH</a> и <a href="https://cmux.com/docs/session-restore" target="_blank" rel="noopener noreferrer">Session Restore</a> — актуальная модель workspaces, surfaces, удалённых сессий и границы восстановления процессов.</li>
+<li><a href="https://github.com/tmux/tmux/wiki/Getting-Started" target="_blank" rel="noopener noreferrer">tmux — Getting Started</a> — server/client, sessions/windows/panes, detach, attach и default key bindings.</li>
+<li><a href="https://man.openbsd.org/ssh.1" target="_blank" rel="noopener noreferrer">OpenSSH manual: ssh(1)</a> — назначение SSH-клиента, синтаксис destination и escape <code>~.</code>.</li>
+<li><a href="https://learn.chatgpt.com/docs/codex/cli" target="_blank" rel="noopener noreferrer">OpenAI Docs — Codex CLI</a> и <a href="https://learn.chatgpt.com/docs/developer-commands?surface=cli" target="_blank" rel="noopener noreferrer">Developer commands</a> — запуск Codex из директории проекта и команды выхода.</li>
+<li><a href="https://code.claude.com/docs/en/cli-usage" target="_blank" rel="noopener noreferrer">Claude Code Docs — CLI reference</a>, <a href="https://code.claude.com/docs/en/getting-started" target="_blank" rel="noopener noreferrer">Advanced setup</a> и <a href="https://code.claude.com/docs/en/interactive-mode" target="_blank" rel="noopener noreferrer">Interactive mode</a> — запуск и управление интерактивной сессией Claude Code.</li>
+<li><a href="https://git-scm.com/docs/git-worktree" target="_blank" rel="noopener noreferrer">Git — git-worktree Documentation</a> — отличие изолированного рабочего дерева от терминального workspace.</li>
+</ol>
+<p>cmux развивается быстро. Свойства его SSH и session restore описаны по официальной документации и локальной версии на дату проверки; перед настройкой автоматического восстановления стоит перечитать актуальные страницы продукта.</p>
+      </article>
+    </main>
+    <footer class="article-footer">
+      <p class="footer-links"><span>Данил Письменный</span><a href="/">Обо мне</a><a href="mailto:danil@brandymint.ru">danil@brandymint.ru</a></p>
+    </footer>
+  </section>
+</body>
+</html>
