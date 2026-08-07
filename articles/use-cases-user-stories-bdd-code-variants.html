@@ -12,6 +12,16 @@
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="article.css">
   <style>
+    /* На странице сравнения блоки должны занимать всю ширину читательской колонки. */
+    .variants-page .article-shell {
+      width: min(1200px, calc(100% - 48px));
+      max-width: none;
+      margin-inline: auto;
+    }
+    .variants-page .longread,
+    .variants-page .variant {
+      width: 100%;
+    }
     .variants-page .longread { padding-top: 1.8rem; }
     .variants-page h1 { max-width: 24ch; }
     .variant-intro { max-width: 68ch; color: #435063; }
@@ -19,6 +29,9 @@
     .variant h2 { margin-bottom: .35rem; }
     .variant-note { margin: 0 0 1rem; color: #536071; }
     .sample {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
       margin: 0;
       padding: 1.5rem 1.65rem;
       overflow-x: auto;
@@ -49,6 +62,7 @@
     .variant-f .key { color: #02d5cf; }
 
     @media (max-width: 650px) {
+      .variants-page .article-shell { width: calc(100% - 36px); }
       .sample { padding: 1.15rem 1.05rem; font-size: 1.05rem; line-height: 1.62; }
     }
   </style>
