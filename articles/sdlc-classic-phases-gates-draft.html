@@ -23,6 +23,8 @@
   <meta name="twitter:image" content="https://pismenny.ru/articles/assets/2026-08-06-sdlc-classic-phases-gates-hero.png">
   <meta name="twitter:image:alt" content="SDLC как итеративный поток через контрольные точки: параллельные процессы, возврат и переход к устойчивой системе">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yegor256/tacit@gh-pages/tacit-css-1.3.9.min.css">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="article.css">
@@ -32,7 +34,7 @@
     "@type": "Article",
     "headline": "SDLC в классическом понимании: этапы, свойства и gates",
     "description": "Объяснение классического SDLC: этапы, артефакты, gates и критерии перехода — и почему жизненный цикл не задаёт одну линейную последовательность.",
-    "dateModified": "2026-08-06",
+    "dateModified": "2026-08-07",
     "mainEntityOfPage": "https://pismenny.ru/articles/sdlc-classic-phases-gates-draft.html",
     "image": "https://pismenny.ru/articles/assets/2026-08-06-sdlc-classic-phases-gates-hero.png",
     "author": {
@@ -44,6 +46,7 @@
       "https://standards.ieee.org/ieee/12207/11416/",
       "https://resources.sei.cmu.edu/asset_files/Newsletter/2003_102_001_413618.pdf",
       "https://www.nist.gov/publications/security-considerations-system-development-life-cycle",
+      "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-64r1.pdf",
       "https://swehb.nasa.gov/spaces/SWEHBVB/pages/32604451/SWE-019%2B-%2BSoftware%2BLife%2BCycle"
     ]
   }
@@ -66,7 +69,7 @@
           <img src="assets/2026-08-06-sdlc-classic-phases-gates-hero.png" alt="SDLC как итеративный поток через контрольные точки: параллельные процессы, возврат и переход к устойчивой системе" width="1200" height="630">
         </figure>
         <aside class="source-note" aria-label="Источники">
-          <p>Статья опирается на <a href="https://standards.ieee.org/ieee/12207/11416/" rel="nofollow">ISO/IEC/IEEE 12207:2026</a>, материалы <a href="https://resources.sei.cmu.edu/asset_files/Newsletter/2003_102_001_413618.pdf" rel="nofollow">Software Engineering Institute</a>, <a href="https://www.nist.gov/publications/security-considerations-system-development-life-cycle" rel="nofollow">NIST</a> и <a href="https://swehb.nasa.gov/spaces/SWEHBVB/pages/32604451/SWE-019%2B-%2BSoftware%2BLife%2BCycle" rel="nofollow">NASA Software Engineering Handbook</a>.</p>
+          <p>Статья опирается на <a href="https://standards.ieee.org/ieee/12207/11416/" rel="nofollow">ISO/IEC/IEEE 12207:2026</a>, материалы <a href="https://resources.sei.cmu.edu/asset_files/Newsletter/2003_102_001_413618.pdf" rel="nofollow">Software Engineering Institute</a>, модели <a href="https://www.nist.gov/publications/security-considerations-system-development-life-cycle" rel="nofollow">NIST SP 800-64 Rev. 2</a> и <a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-64r1.pdf" rel="nofollow">Rev. 1</a>, а также <a href="https://swehb.nasa.gov/spaces/SWEHBVB/pages/32604451/SWE-019%2B-%2BSoftware%2BLife%2BCycle" rel="nofollow">NASA Software Engineering Handbook</a>.</p>
         </aside>
         <h2>Короткий ответ</h2>
 
@@ -108,7 +111,7 @@
         Вывод из эксплуатации
         </code></pre>
 
-        <p>Эта последовательность обобщает классическое описание Software Engineering Institute: потребности и ограничения, требования, архитектура, детальный дизайн, реализация, тестирование, внедрение и сопровождение. SEI отдельно подчёркивает, что этот список описывает необходимые виды деятельности, но сам по себе не задаёт конкретную модель процесса.<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">2</a></sup> Вывод из эксплуатации добавлен как самостоятельный этап из полного lifecycle, принятого в NIST и ISO/IEC/IEEE 12207.<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">3</a></sup><sup id="fnref:8:1"><a href="#fn:8" class="footnote" rel="footnote" role="doc-noteref">1</a></sup></p>
+        <p>Эта последовательность обобщает классическое описание Software Engineering Institute: потребности и ограничения, требования, архитектура, детальный дизайн, реализация, тестирование, внедрение и сопровождение. SEI отдельно подчёркивает, что этот список описывает необходимые виды деятельности, но сам по себе не задаёт конкретную модель процесса.<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">2</a></sup> Вывод из эксплуатации добавлен как самостоятельный этап из полного lifecycle, принятого в ранней модели NIST и в ISO/IEC/IEEE 12207.<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">3</a></sup><sup id="fnref:8:1"><a href="#fn:8" class="footnote" rel="footnote" role="doc-noteref">1</a></sup></p>
 
         <h2>Почему нет одного «правильного» списка фаз</h2>
 
@@ -121,7 +124,7 @@
           <li>продуктовая команда может укрупнять цикл до discovery, delivery и operations.</li>
         </ul>
 
-        <p>NIST в руководстве по безопасности использует пять укрупнённых фаз: <strong>initiation, acquisition/development, implementation, operations/maintenance, disposition</strong>. Это не противоречит инженерной схеме выше: NIST описывает system lifecycle и группирует более мелкие действия в крупные управленческие блоки.<sup id="fnref:2:1"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">3</a></sup></p>
+        <p>В ранней общей модели NIST SP 800-64 Rev. 1 SDLC был описан пятью укрупнёнными фазами: <strong>initiation, acquisition/development, implementation, operations/maintenance, disposition</strong>. Это не противоречит инженерной схеме выше: NIST группирует более мелкие действия в крупные управленческие блоки. Более поздняя Rev. 2 посвящена прежде всего встраиванию безопасности в SDLC и не претендует на описание всей системы разработки.<sup id="fnref:2:1"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">3</a></sup><sup id="fnref:9"><a href="#fn:9" class="footnote" rel="footnote" role="doc-noteref">4</a></sup></p>
 
         <p>Поэтому полезно отличать:</p>
 
@@ -157,19 +160,19 @@
               <td>2. Требования</td>
               <td>что именно требуется и как это проверить</td>
               <td>согласованный набор требований и критериев приёмки</td>
-              <td>SRR</td>
+              <td>requirements review / SRR</td>
             </tr>
             <tr>
               <td>3. Архитектура</td>
               <td>каким способом достичь требуемых свойств</td>
               <td>архитектурная схема, интерфейсы, ключевые решения</td>
-              <td>SDR/PDR</td>
+              <td>design review / SDR/PDR</td>
             </tr>
             <tr>
               <td>4. Детальный дизайн</td>
               <td>достаточно ли решение конкретно для реализации</td>
               <td>спецификации компонентов, данных и поведения</td>
-              <td>CDR</td>
+              <td>design review / CDR</td>
             </tr>
             <tr>
               <td>5. Реализация</td>
@@ -181,7 +184,7 @@
               <td>6. Проверка и приёмка</td>
               <td>соответствует ли продукт требованиям и реальной задаче</td>
               <td>результаты V&amp;V, дефекты, решение о приёмке</td>
-              <td>TRR/SAR</td>
+              <td>test/acceptance review / TRR/SAR</td>
             </tr>
             <tr>
               <td>7. Внедрение</td>
@@ -203,6 +206,8 @@
             </tr>
           </tbody>
         </table>
+
+        <p class="source-note">Названия SRR, PDR, CDR, TRR, SAR и ORR в этой таблице — примеры из формальных инженерных практик, в частности NASA. Они не образуют обязательный универсальный набор SDLC-gates: в обычном проекте такие reviews могут отсутствовать, объединяться или заменяться более лёгкими критериями перехода.</p>
 
         <h2>Свойства хорошей фазы</h2>
 
@@ -233,7 +238,7 @@
 
         <p><strong>Свойства результата:</strong> проблема сформулирована через наблюдаемый эффект; границы явно ограничены; основные риски названы; решение не притворяется более определённым, чем оно есть.</p>
 
-        <p><strong>Типичный gate:</strong> решение «инициировать разработку / провести discovery / остановить / купить готовое решение». Для больших систем это может называться concept review, MCR или SCR.</p>
+        <p><strong>Возможная контрольная точка:</strong> решение «инициировать разработку / провести discovery / остановить / купить готовое решение». Для больших систем это может называться concept review, MCR или SCR.</p>
 
         <p><strong>Частая ошибка:</strong> начать проект с решения («сделаем сервис на X») до проверки проблемы, пользователей и ограничений.</p>
 
@@ -245,9 +250,9 @@
 
         <p><strong>Типичные результаты:</strong> SRS или продуктовая спецификация, use cases/user stories, критерии приёмки, доменная модель, интерфейсные контракты, матрица трассировки, список допущений и открытых вопросов.</p>
 
-        <p><strong>Свойства хороших требований:</strong> они однозначны, проверяемы, непротиворечивы, реализуемы, трассируемы к цели/потребителю и имеют приоритет. «Система должна быть удобной» — пожелание; «95-й перцентиль ответа не более 300 мс при 500 RPS» — проверяемое требование.</p>
+        <p><strong>Практический чек-лист хороших требований:</strong> они однозначны, проверяемы, непротиворечивы, реализуемы, трассируемы к цели/потребителю и имеют приоритет. «Система должна быть удобной» — пожелание; «95-й перцентиль ответа не более 300 мс при 500 RPS» — пример проверяемого требования.</p>
 
-        <p><strong>Типичный gate:</strong> SRR (System Requirements Review) или утверждение baseline требований. Смысл gate — подтвердить, что требования достаточно полны, согласованы, достижимы, трассируемы и готовы служить основанием для дизайна. NASA именно так описывает цель software SRR.<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">4</a></sup></p>
+        <p><strong>Возможная контрольная точка:</strong> SRR (System Requirements Review) или утверждение baseline требований. В формальной инженерной среде такой review может быть частью gate. Смысл проверки — подтвердить, что требования достаточно полны, согласованы, достижимы, трассируемы и готовы служить основанием для дизайна. NASA именно так описывает цель software SRR.<sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">4</a></sup></p>
 
         <p><strong>Частая ошибка:</strong> считать требования завершёнными после написания документа, не проверив их на сценариях, прототипах и конфликтующих ограничениях.</p>
 
@@ -261,7 +266,7 @@
 
         <p><strong>Свойства результата:</strong> требования трассируются к архитектурным решениям; критические атрибуты качества проверены хотя бы анализом или прототипом; границы компонентов понятны; решения и компромиссы записаны; известны оставшиеся риски.</p>
 
-        <p><strong>Типичные gates:</strong> SDR (System Design Review) или PDR (Preliminary Design Review). PDR обычно отвечает на вопрос, достаточно ли зрел предварительный дизайн, чтобы продолжать детальную разработку с приемлемым риском.</p>
+        <p><strong>Возможная контрольная точка:</strong> SDR (System Design Review) или PDR (Preliminary Design Review). В формальной инженерной среде PDR может быть частью gate и отвечает на вопрос, достаточно ли зрел предварительный дизайн, чтобы продолжать детальную разработку с приемлемым риском.</p>
 
         <p><strong>Частая ошибка:</strong> сделать красивую схему, не показав, каким образом она удовлетворяет требованиям, бюджету, операционным ограничениям и сценариям отказа.</p>
 
@@ -275,7 +280,7 @@
 
         <p><strong>Свойства результата:</strong> разработчик может реализовать решение без угадывания критических правил; тестировщик может вывести проверки; зависимости и миграции понятны; изменения конфигурации и обратная совместимость учтены.</p>
 
-        <p><strong>Типичный gate:</strong> CDR (Critical Design Review) или утверждение baseline дизайна. NASA описывает CDR как проверку зрелости дизайна перед переходом к реализации и тестированию.<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">5</a></sup></p>
+        <p><strong>Возможная контрольная точка:</strong> CDR (Critical Design Review) или утверждение baseline дизайна. В NASA-подобной формальной среде CDR может быть частью gate; NASA описывает его как проверку зрелости дизайна перед переходом к реализации и тестированию.<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">5</a></sup></p>
 
         <p><strong>Частая ошибка:</strong> детализировать всё подряд и заморозить решение раньше, чем проверены самые рискованные предположения.</p>
 
@@ -289,7 +294,7 @@
 
         <p><strong>Свойства результата:</strong> код версионируется и воспроизводимо собирается; изменения проходят ревью; автоматические проверки стабильны; компоненты интегрируются по контрактам; технический долг и остаточные риски видимы.</p>
 
-        <p><strong>Типичный gate:</strong> проверка готовности к интеграции или входу в системное тестирование. В более формальной среде это может быть Software Integration Review (SIR). Production Readiness Review (PRR) проводят позже, когда продукт и процессы поставки готовы к выпуску.</p>
+        <p><strong>Возможная контрольная точка:</strong> проверка готовности к интеграции или входу в системное тестирование. В более формальной среде это может быть Software Integration Review (SIR). Production Readiness Review (PRR) проводят позже, когда продукт и процессы поставки готовы к выпуску.</p>
 
         <p><strong>Частая ошибка:</strong> измерять прогресс строками кода или количеством закрытых задач, не проверяя работающий результат и интеграцию.</p>
 
@@ -303,7 +308,7 @@
 
         <p><strong>Свойства результата:</strong> требования покрыты проверками; тестовая среда и данные контролируемы; дефекты классифицированы по серьёзности и риску; результаты воспроизводимы; известны ограничения тестового покрытия.</p>
 
-        <p><strong>Типичные gates:</strong> TRR (Test Readiness Review) перед началом формального тестирования, SAR/acceptance review перед приёмкой, ORR (Operational Readiness Review) перед эксплуатацией. NASA прямо связывает TRR с готовностью ПО, среды, оборудования, документации и тест-кейсов к проведению тестов.<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">6</a></sup></p>
+        <p><strong>Возможные контрольные точки:</strong> TRR (Test Readiness Review) перед началом формального тестирования и SAR/acceptance review перед приёмкой. ORR относится уже к готовности эксплуатации. В NASA-подобной формальной среде эти reviews могут быть частью gate. NASA прямо связывает TRR с готовностью ПО, среды, оборудования, документации и тест-кейсов к проведению тестов.<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">6</a></sup></p>
 
         <p><strong>Частая ошибка:</strong> превращать тестирование в финальный этап, куда впервые приносят целиком неизвестный продукт. В итеративной разработке тестирование идёт внутри каждого инкремента, но общая проверка готовности и приёмки всё равно может быть нужна.</p>
 
@@ -317,7 +322,7 @@
 
         <p><strong>Свойства результата:</strong> понятен способ установки и отката; production-среда подготовлена; критические риски приняты ответственным лицом; поддержка и мониторинг существуют; документация соответствует реально поставленной версии.</p>
 
-        <p><strong>Типичный gate:</strong> ORR, go/no-go или разрешение на production-запуск. В NASA ORR проверяет фактические характеристики системы, результаты тестирования, процедуры, персонал и пользовательскую документацию.<sup id="fnref:6"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">7</a></sup></p>
+        <p><strong>Возможная контрольная точка:</strong> ORR, go/no-go или разрешение на production-запуск. В NASA-подобной формальной среде ORR может быть частью gate; NASA использует его для проверки фактических характеристик системы, результатов тестирования, процедур, персонала и пользовательской документации.<sup id="fnref:6"><a href="#fn:6" class="footnote" rel="footnote" role="doc-noteref">7</a></sup></p>
 
         <p><strong>Частая ошибка:</strong> считать внедрение копированием бинарника, забывая о данных, секретах, миграциях, доступах, наблюдаемости, поддержке и плане восстановления.</p>
 
@@ -331,9 +336,9 @@
 
         <p><strong>Свойства результата:</strong> изменения контролируемы; SLA/SLO и риски видимы; есть план обновлений и поддержки; технический долг не скрыт; каждая новая версия снова проходит подходящие проверки.</p>
 
-        <p><strong>Типичные gates:</strong> одобрение изменения, проверка готовности релиза, security review, post-implementation review. Для существенного изменения цикл снова проходит необходимые процессы требований, дизайна и тестирования.</p>
+        <p><strong>Возможные контрольные точки:</strong> одобрение изменения, проверка готовности релиза, security review, post-implementation review. Для существенного изменения цикл снова проходит необходимые процессы требований, дизайна и тестирования.</p>
 
-        <p><strong>Частая ошибка:</strong> считать сопровождение «периодом после настоящей разработки». На практике именно здесь система проводит большую часть жизни, а стоимость изменений и риски особенно зависят от качества предыдущих фаз.</p>
+        <p><strong>Частая ошибка:</strong> считать сопровождение «периодом после настоящей разработки». На практике эксплуатация и сопровождение часто занимают значительную часть жизненного цикла, а стоимость изменений и риски особенно зависят от качества предыдущих фаз.</p>
 
         <h3>9. Вывод из эксплуатации</h3>
 
@@ -343,7 +348,7 @@
 
         <p><strong>Типичные результаты:</strong> план вывода из эксплуатации, доказательства миграции и архивирования, решение о сроках хранения данных, отзыв доступов, подтверждение отключения инфраструктуры, документация системы-преемника.</p>
 
-        <p><strong>Типичный gate:</strong> decommissioning review или формальное закрытие. NIST называет disposition отдельной фазой жизненного цикла и включает в неё завершение системы, а не только создание и эксплуатацию.<sup id="fnref:2:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">3</a></sup></p>
+        <p><strong>Возможная контрольная точка:</strong> decommissioning review или формальное закрытие. В ранней модели NIST disposition названа отдельной фазой жизненного цикла и включает завершение системы, а не только её создание и эксплуатацию.<sup id="fnref:2:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">3</a></sup></p>
 
         <h2>Milestone, review, gate и baseline — не одно и то же</h2>
 
@@ -491,7 +496,7 @@
           </tbody>
         </table>
 
-        <p>В Agile эти gates не исчезают. Они могут происходить чаще и быть меньше по масштабу: каждый инкремент проходит свои критерии приёмки, а более крупные риски — отдельные архитектурные, security- или production-readiness reviews.</p>
+        <p>Практический вывод для Agile таков: контрольные точки не обязательно исчезают, но часто становятся чаще и меньше по масштабу. Каждый инкремент проходит свои критерии приёмки, а более крупные риски — отдельные архитектурные, security- или production-readiness reviews.</p>
 
         <h2>Где в SDLC находится безопасность и качество</h2>
 
@@ -551,6 +556,175 @@
 
         <p>Gates нужны не для того, чтобы «закрывать бумажные этапы», а чтобы принимать осознанное решение о риске. В маленьком продукте это лёгкие checklist и approvals; в safety-critical, регулируемых или очень дорогих системах — формальные reviews с entrance/exit criteria, baseline-артефактами и независимым уполномоченным органом.</p>
 
+        <h2>Глоссарий</h2>
+
+        <p>Ниже собраны термины, использованные в статье. Английские варианты приведены потому, что именно они чаще всего встречаются в стандартах, документации и рабочих обсуждениях.</p>
+
+        <dl class="glossary">
+          <dt><strong>SDLC (Software Development Life Cycle)</strong></dt>
+          <dd>Жизненный цикл создания, эксплуатации, изменения и вывода из эксплуатации программной системы.</dd>
+          <dt><strong>System Development Life Cycle</strong></dt>
+          <dd>Более широкое употребление SDLC: жизненный цикл информационной системы, включающий ПО, оборудование, людей, процессы и операционную среду.</dd>
+          <dt><strong>Software lifecycle</strong></dt>
+          <dd>Жизненный цикл программного продукта или программной части системы.</dd>
+          <dt><strong>Lifecycle model</strong></dt>
+          <dd>Способ организовать процессы во времени: Waterfall, V-model, spiral, iterative, incremental или hybrid.</dd>
+          <dt><strong>Process / процесс</strong></dt>
+          <dd>Повторяемый набор связанных работ, входов, результатов и правил.</dd>
+          <dt><strong>Activity / деятельность</strong></dt>
+          <dd>Конкретный вид работы внутри процесса, например анализ требований или тестирование.</dd>
+          <dt><strong>Phase / фаза</strong></dt>
+          <dd>Крупный участок жизненного цикла в выбранной модели.</dd>
+          <dt><strong>Stage / этап</strong></dt>
+          <dd>Логически выделенная часть фазы или жизненного цикла.</dd>
+          <dt><strong>Governance</strong></dt>
+          <dd>Система полномочий, правил и решений, определяющая, кто может разрешить дальнейшее движение.</dd>
+          <dt><strong>Waterfall / каскадная модель</strong></dt>
+          <dd>Модель, в которой основные работы организованы преимущественно последовательно.</dd>
+          <dt><strong>V-model</strong></dt>
+          <dd>Модель, связывающая этапы определения и дизайна с соответствующими уровнями проверки и валидации.</dd>
+          <dt><strong>Iterative / итеративная модель</strong></dt>
+          <dd>Модель, в которой решение постепенно уточняется через повторяющиеся циклы.</dd>
+          <dt><strong>Incremental / инкрементальная модель</strong></dt>
+          <dd>Модель, в которой система создаётся и поставляется частями.</dd>
+          <dt><strong>Spiral / спиральная модель</strong></dt>
+          <dd>Риск-ориентированная итеративная модель с планированием, анализом рисков, инженерной работой и оценкой результата в каждом цикле.</dd>
+          <dt><strong>Hybrid / гибридная модель</strong></dt>
+          <dd>Сочетание элементов нескольких моделей жизненного цикла.</dd>
+          <dt><strong>Agile</strong></dt>
+          <dd>Семейство принципов и практик итеративной разработки, а не одна конкретная SDLC-модель.</dd>
+          <dt><strong>Scrum</strong></dt>
+          <dd>Фреймворк организации работы через роли, события и ограниченные по времени итерации.</dd>
+          <dt><strong>Kanban</strong></dt>
+          <dd>Метод управления потоком работы с визуализацией задач и ограничением незавершённой работы.</dd>
+
+          <dt><strong>Gate</strong></dt>
+          <dd>Контрольная точка, в которой уполномоченная сторона принимает решение о дальнейшем движении.</dd>
+          <dt><strong>Phase gate</strong></dt>
+          <dd>Gate между крупными фазами или этапами, учитывающий зрелость результата, ценность, стоимость, сроки и остаточный риск.</dd>
+          <dt><strong>Quality gate</strong></dt>
+          <dd>Проверяемый порог качества внутри процесса, например отсутствие критических дефектов.</dd>
+          <dt><strong>KDP (Key Decision Point)</strong></dt>
+          <dd>Формальная точка принятия решения о готовности перейти дальше; в NASA термин близок к gate.</dd>
+          <dt><strong>Milestone / веха</strong></dt>
+          <dd>Значимая точка плана или календаря, не обязательно содержащая управленческое решение.</dd>
+          <dt><strong>Review / проверка</strong></dt>
+          <dd>Экспертная оценка результата, рисков и доказательств.</dd>
+          <dt><strong>Transition criteria</strong></dt>
+          <dd>Условия, выполнение которых позволяет перейти к следующему этапу или review.</dd>
+          <dt><strong>Entrance criteria</strong></dt>
+          <dd>Условия, которые должны быть выполнены до начала review или другой контрольной процедуры.</dd>
+          <dt><strong>Success/exit criteria</strong></dt>
+          <dd>Условия успешного завершения review или этапа.</dd>
+          <dt><strong>Go/no-go</strong></dt>
+          <dd>Решение запускать следующий шаг или остановить переход.</dd>
+          <dt><strong>Baseline</strong></dt>
+          <dd>Утверждённая версия требований, дизайна, конфигурации или плана, служащая контролируемой точкой отсчёта.</dd>
+          <dt><strong>Evidence / доказательства</strong></dt>
+          <dd>Наблюдаемые материалы, подтверждающие выполнение критерия: сборка, отчёт тестов, протокол решения или метрика.</dd>
+          <dt><strong>Decision authority</strong></dt>
+          <dd>Лицо или орган, имеющий полномочия принять решение на gate.</dd>
+
+          <dt><strong>Requirement / требование</strong></dt>
+          <dd>Проверяемое утверждение о том, что система должна делать или какими свойствами обладать.</dd>
+          <dt><strong>Functional requirement</strong></dt>
+          <dd>Требование к функции или поведению системы.</dd>
+          <dt><strong>Non-functional requirement</strong></dt>
+          <dd>Требование к качеству, ограничению или характеристике работы: производительности, безопасности, доступности и т. п.</dd>
+          <dt><strong>Acceptance criteria / критерии приёмки</strong></dt>
+          <dd>Условия, по которым заказчик или пользователь решает, что результат принят.</dd>
+          <dt><strong>SRS (Software Requirements Specification)</strong></dt>
+          <dd>Документ с систематизированными требованиями к программному обеспечению.</dd>
+          <dt><strong>Traceability / трассируемость</strong></dt>
+          <dd>Возможность связать цель или требование с дизайном, реализацией, тестом и результатом проверки.</dd>
+          <dt><strong>Traceability matrix</strong></dt>
+          <dd>Таблица связей между требованиями и доказательствами их реализации и проверки.</dd>
+          <dt><strong>Architecture / архитектура</strong></dt>
+          <dd>Крупная структура системы, её компонентов, связей, интерфейсов и ключевых ограничений.</dd>
+          <dt><strong>System design / системный дизайн</strong></dt>
+          <dd>Проектирование структуры и поведения системы на уровне, необходимом для реализации и интеграции.</dd>
+          <dt><strong>Detailed design / детальный дизайн</strong></dt>
+          <dd>Уточнение алгоритмов, данных, протоколов, состояний и поведения отдельных компонентов.</dd>
+          <dt><strong>Interface contract</strong></dt>
+          <dd>Согласованное описание того, как компоненты или системы взаимодействуют.</dd>
+          <dt><strong>ADR (Architecture Decision Record)</strong></dt>
+          <dd>Запись архитектурного решения, его контекста, альтернатив и последствий.</dd>
+          <dt><strong>C4 model</strong></dt>
+          <dd>Способ описывать архитектуру через уровни контекста, контейнеров, компонентов и кода.</dd>
+          <dt><strong>Threat modeling</strong></dt>
+          <dd>Систематический поиск угроз, уязвимостей и способов защиты на этапе проектирования.</dd>
+          <dt><strong>PoC (Proof of Concept)</strong></dt>
+          <dd>Эксперимент или прототип, проверяющий техническую осуществимость идеи.</dd>
+          <dt><strong>Business case</strong></dt>
+          <dd>Обоснование проекта через проблему, ожидаемый эффект, стоимость, альтернативы и риски.</dd>
+          <dt><strong>Stakeholder</strong></dt>
+          <dd>Человек, группа или организация, влияющие на систему или испытывающие влияние системы.</dd>
+
+          <dt><strong>Implementation / реализация</strong></dt>
+          <dd>Превращение дизайна в код, конфигурацию, инфраструктуру и другие поставляемые компоненты.</dd>
+          <dt><strong>Build / сборка</strong></dt>
+          <dd>Процесс и результат преобразования исходного кода и зависимостей в запускаемый артефакт.</dd>
+          <dt><strong>CI (Continuous Integration)</strong></dt>
+          <dd>Непрерывная интеграция изменений с автоматической сборкой и проверками.</dd>
+          <dt><strong>IaC (Infrastructure as Code)</strong></dt>
+          <dd>Описание инфраструктуры в коде, позволяющее воспроизводимо создавать и изменять окружения.</dd>
+          <dt><strong>Deployment / развёртывание</strong></dt>
+          <dd>Установка конкретной версии системы в целевое окружение.</dd>
+          <dt><strong>Release / релиз</strong></dt>
+          <dd>Подготовленная и идентифицированная версия продукта, предназначенная для передачи пользователям или эксплуатации.</dd>
+          <dt><strong>Release candidate</strong></dt>
+          <dd>Версия, потенциально готовая к релизу и проходящая финальные проверки.</dd>
+          <dt><strong>Runbook</strong></dt>
+          <dd>Пошаговая инструкция для развёртывания, эксплуатации, диагностики или восстановления системы.</dd>
+          <dt><strong>Rollback / откат</strong></dt>
+          <dd>Возврат системы к предыдущей рабочей версии или конфигурации.</dd>
+          <dt><strong>Observability / наблюдаемость</strong></dt>
+          <dd>Способность понимать внутреннее состояние системы по логам, метрикам, трассировкам и другим сигналам.</dd>
+          <dt><strong>Monitoring / мониторинг</strong></dt>
+          <dd>Регулярный сбор и анализ показателей работы системы.</dd>
+          <dt><strong>Incident / инцидент</strong></dt>
+          <dd>Событие, нарушившее или угрожающее доступности, качеству или безопасности системы.</dd>
+          <dt><strong>SLA / SLO</strong></dt>
+          <dd>SLA — договорённость об уровне сервиса; SLO — измеримая цель уровня сервиса.</dd>
+          <dt><strong>Backlog</strong></dt>
+          <dd>Упорядоченный список задач, изменений, дефектов и идей.</dd>
+          <dt><strong>Technical debt / технический долг</strong></dt>
+          <dd>Последствия временных или неидеальных решений, увеличивающие стоимость будущих изменений.</dd>
+          <dt><strong>Change control</strong></dt>
+          <dd>Управляемый процесс оценки, согласования, реализации и проверки изменений.</dd>
+          <dt><strong>Maintenance / сопровождение</strong></dt>
+          <dd>Исправление, адаптация, улучшение и поддержка системы после поставки.</dd>
+          <dt><strong>Disposition</strong></dt>
+          <dd>Завершение жизненного цикла системы, включая миграцию, архивирование, отзыв доступов и отключение.</dd>
+
+          <dt><strong>V&amp;V (Verification and Validation)</strong></dt>
+          <dd>Проверка соответствия спецификации и проверка пригодности для реальной задачи.</dd>
+          <dt><strong>Verification / верификация</strong></dt>
+          <dd>Подтверждение, что продукт реализован в соответствии с требованиями и спецификацией.</dd>
+          <dt><strong>Validation / валидация</strong></dt>
+          <dd>Подтверждение, что продукт подходит пользователю и контексту применения.</dd>
+          <dt><strong>Defect / дефект</strong></dt>
+          <dd>Несоответствие продукта требованию, ожидаемому поведению или критерию качества.</dd>
+          <dt><strong>Test case / тест-кейс</strong></dt>
+          <dd>Описание условий, шагов, входных данных и ожидаемого результата проверки.</dd>
+          <dt><strong>SRR, PDR, CDR, SDR</strong></dt>
+          <dd>Формальные reviews требований и дизайна: System Requirements Review, Preliminary Design Review, Critical Design Review и System Design Review.</dd>
+          <dt><strong>TRR, SAR, ORR</strong></dt>
+          <dd>Reviews готовности к тестированию, приёмке и эксплуатации: Test Readiness Review, System Acceptance Review и Operational Readiness Review.</dd>
+          <dt><strong>SIR, PRR</strong></dt>
+          <dd>Software Integration Review и Production Readiness Review — проверки готовности к интеграции и поставке.</dd>
+          <dt><strong>MCR, SCR</strong></dt>
+          <dd>Mission Concept Review и System Concept Review — ранние проверки концепции и реализуемости в формальных инженерных программах.</dd>
+          <dt><strong>Security review</strong></dt>
+          <dd>Проверка архитектуры, кода, конфигурации или процесса на неприемлемые риски безопасности.</dd>
+          <dt><strong>Production readiness</strong></dt>
+          <dd>Готовность продукта, окружения, процессов поставки, мониторинга и поддержки к работе в production.</dd>
+          <dt><strong>Safety-critical</strong></dt>
+          <dd>Система, отказ которой может привести к угрозе жизни, здоровью, безопасности или существенному ущербу.</dd>
+          <dt><strong>Residual risk / остаточный риск</strong></dt>
+          <dd>Риск, остающийся после применения запланированных мер контроля.</dd>
+        </dl>
+
         <h2>Источники</h2>
 
         <div class="footnotes" role="doc-endnotes">
@@ -558,11 +732,14 @@
             <li id="fn:8">
               <p><a href="https://standards.ieee.org/ieee/12207/11416/">IEEE/ISO/IEC 12207-2026, “Software life cycle processes”</a> — действующий стандарт: общий процессный каркас от замысла до retirement, возможность параллельного, итеративного и рекурсивного применения процессов и построения собственной модели из stages. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:8:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a></p>
             </li>
+            <li id="fn:9">
+              <p><a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-64r1.pdf">NIST SP 800-64 Rev. 1</a> — ранняя общая пятифазная модель SDLC: initiation, acquisition/development, implementation, operations/maintenance и disposition. <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+            </li>
             <li id="fn:1">
               <p><a href="https://resources.sei.cmu.edu/asset_files/Newsletter/2003_102_001_413618.pdf">SEI, “Rethinking the Software Life Cycle”</a> — перечень типичных SDLC activities и оговорка, что они не задают конкретную модель разработки. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
             </li>
             <li id="fn:2">
-              <p><a href="https://www.nist.gov/publications/security-considerations-system-development-life-cycle">NIST SP 800-64 Rev. 2, “Security Considerations in the System Development Life Cycle”</a> — укрупнённые фазы от initiation до disposition и принцип встраивания security во весь цикл. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:2:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a> <a href="#fnref:2:2" class="reversefootnote" role="doc-backlink">&#8617;<sup>3</sup></a> <a href="#fnref:2:3" class="reversefootnote" role="doc-backlink">&#8617;<sup>4</sup></a></p>
+              <p><a href="https://www.nist.gov/publications/security-considerations-system-development-life-cycle">NIST SP 800-64 Rev. 2, “Security Considerations in the System Development Life Cycle”</a> — руководство по встраиванию security activities и controls во весь SDLC; общий system development и governance находятся за пределами его основной темы. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
             </li>
             <li id="fn:3">
               <p><a href="https://swehb.nasa.gov/spaces/SWEHBVB/pages/32604451/SWE-019%2B-%2BSoftware%2BLife%2BCycle">NASA Software Engineering Handbook, SWE-019</a> и <a href="https://swehb.nasa.gov/spaces/SWEHBVD/pages/102695639/7.09%2B-%2BEntrance%2Band%2BExit%2BCriteria">Entrance/Exit Criteria, SRR</a> — роль requirements review и phase transition criteria. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
@@ -581,6 +758,10 @@
             </li>
           </ol>
         </div>
+
+        <aside class="source-note" aria-label="Ревизия статьи">
+          <p><strong>Ревизия от 7 августа 2026 года:</strong> уточнена атрибуция пятифазной модели NIST (Rev. 1), разграничены универсальные SDLC-критерии и NASA-примеры gate/review, смягчены обобщающие формулировки и добавлен глоссарий терминов.</p>
+        </aside>
 
       </article>
     </main>
