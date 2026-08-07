@@ -98,6 +98,12 @@ footer .copyright {
   max-width: 24px;
 }
 
+.not-found__illustration {
+  display: block;
+  width: 100%;
+  margin: 24px 0 30px;
+}
+
 .photo__block {
   float: left;
   margin-top: 72px;
