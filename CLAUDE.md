@@ -39,6 +39,9 @@ The site is deployed via GitHub Pages with custom domain `pismenny.ru` (configur
 
 ### Draft articles
 
+Article URLs and file paths must never contain `draft`. A draft status is expressed only by
+metadata, robots directives, and visible status text in the page.
+
 Articles may be published on the site in draft status so they can be reviewed by
 direct link. A draft article must:
 
