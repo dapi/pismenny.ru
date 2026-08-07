@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Варианты оформления примеров BDD — Данил Письменный</title>
+  <meta name="description" content="Шесть вариантов оформления блока Story, Rule, Examples, Questions для статьи о use cases, user stories и BDD.">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="googlebot" content="noindex,nofollow,noarchive">
+  <link rel="canonical" href="https://pismenny.ru/articles/use-cases-user-stories-bdd-code-variants.html">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yegor256/tacit@gh-pages/tacit-css-1.3.9.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="article.css">
+  <style>
+    .variants-page .longread { padding-top: 1.8rem; }
+    .variants-page h1 { max-width: 24ch; }
+    .variant-intro { max-width: 68ch; color: #435063; }
+    .variant { margin: 2.8rem 0 4rem; }
+    .variant h2 { margin-bottom: .35rem; }
+    .variant-note { margin: 0 0 1rem; color: #536071; }
+    .sample {
+      margin: 0;
+      padding: 1.5rem 1.65rem;
+      overflow-x: auto;
+      border-radius: 10px;
+      font-size: 1.26rem;
+      line-height: 1.72;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .sample .key { font-weight: 800; }
+
+    .variant-a .sample { background: #e5e7e4; color: #111827; border: 1px solid #c9ceca; }
+    .variant-a .key { color: #111827; }
+
+    .variant-b .sample { background: #f1f0eb; color: #17212b; border-left: 5px solid #245d98; box-shadow: 0 0 0 1px rgba(23,33,43,.12); }
+    .variant-b .key { color: #245d98; }
+
+    .variant-c .sample { background: #dfe8ee; color: #17212b; border: 1px solid #a9bdca; border-radius: 4px; }
+    .variant-c .key { color: #17212b; background: #c4d5df; padding: .03em .22em; border-radius: 4px; }
+
+    .variant-d .sample { background: #ffffff; color: #17212b; border: 1px solid #d6d9dc; box-shadow: 0 8px 24px rgba(23,33,43,.09); }
+    .variant-d .key { color: #b64938; }
+
+    .variant-e .sample { background: #17212b; color: #f7f6f2; border: 1px solid #245d98; }
+    .variant-e .key { color: #f7a08b; }
+
+    .variant-f .sample { background: #111700; color: #d4d80b; border: 1px solid #667000; border-left: 4px solid #d4d80b; }
+    .variant-f .key { color: #88d5ce; }
+
+    @media (max-width: 650px) {
+      .sample { padding: 1.15rem 1.05rem; font-size: 1.2rem; line-height: 1.62; }
+    }
+  </style>
+</head>
+<body class="article-page variants-page">
+  <section class="article-shell">
+    <nav class="article-nav" aria-label="Навигация">
+      <a href="/">Данил Письменный</a>
+      <a href="use-cases-user-stories-bdd.html">К статье</a>
+    </nav>
+    <main id="article-content">
+      <article class="longread">
+        <h1>Варианты оформления блоков с примерами</h1>
+        <p class="article-meta"><span class="draft-label">Черновик</span> · Внутреннее сравнение</p>
+        <p class="variant-intro">На этой странице шесть вариантов одного и того же блока. Во всех вариантах шрифт увеличен примерно на 20% относительно текущей статьи. Вариант F добавлен по вашему скриншоту с оливковым фоном и жёлто-бирюзовой палитрой.</p>
+
+        <section class="variant variant-a">
+          <h2>A. Светло-серый фон и чёрный текст</h2>
+          <p class="variant-note">Самый близкий к вашему предложению: минимальный контраст с основным текстом, спокойная рамка.</p>
+          <pre class="sample"><span class="key">Story:</span>
+  Импортировать операции без повторного создания дублей.
+
+<span class="key">Rule:</span>
+  Операция, ранее импортированная из этого счёта, повторно не создаётся.
+
+<span class="key">Examples:</span>
+  – тот же файл загружен второй раз;
+  – другая выписка содержит ранее импортированную операцию;
+  – одинаковая сумма и дата, но разные банковские ID.
+
+<span class="key">Questions:</span>
+  – что является стабильным идентификатором у каждого банка?
+  – считаем ли дублем операцию, исправленную банком задним числом?</pre>
+        </section>
+
+        <section class="variant variant-b">
+          <h2>B. Тёплый фон и синяя смысловая граница</h2>
+          <p class="variant-note">Сохраняет бумажную палитру сайта; граница быстро отделяет пример от обычного текста.</p>
+          <pre class="sample"><span class="key">Story:</span>
+  Импортировать операции без повторного создания дублей.
+
+<span class="key">Rule:</span>
+  Операция, ранее импортированная из этого счёта, повторно не создаётся.
+
+<span class="key">Examples:</span>
+  – тот же файл загружен второй раз;
+  – другая выписка содержит ранее импортированную операцию;
+  – одинаковая сумма и дата, но разные банковские ID.
+
+<span class="key">Questions:</span>
+  – что является стабильным идентификатором у каждого банка?
+  – считаем ли дублем операцию, исправленную банком задним числом?</pre>
+        </section>
+
+        <section class="variant variant-c">
+          <h2>C. Холодный голубовато-серый блок</h2>
+          <p class="variant-note">Более заметный информационный контейнер; ключи выделены мягкими плашками.</p>
+          <pre class="sample"><span class="key">Story:</span>
+  Импортировать операции без повторного создания дублей.
+
+<span class="key">Rule:</span>
+  Операция, ранее импортированная из этого счёта, повторно не создаётся.
+
+<span class="key">Examples:</span>
+  – тот же файл загружен второй раз;
+  – другая выписка содержит ранее импортированную операцию;
+  – одинаковая сумма и дата, но разные банковские ID.
+
+<span class="key">Questions:</span>
+  – что является стабильным идентификатором у каждого банка?
+  – считаем ли дублем операцию, исправленную банком задним числом?</pre>
+        </section>
+
+        <section class="variant variant-d">
+          <h2>D. Белая карточка с лёгкой тенью</h2>
+          <p class="variant-note">Максимально нейтральное решение: блок виден за счёт поверхности, а не цвета текста.</p>
+          <pre class="sample"><span class="key">Story:</span>
+  Импортировать операции без повторного создания дублей.
+
+<span class="key">Rule:</span>
+  Операция, ранее импортированная из этого счёта, повторно не создаётся.
+
+<span class="key">Examples:</span>
+  – тот же файл загружен второй раз;
+  – другая выписка содержит ранее импортированную операцию;
+  – одинаковая сумма и дата, но разные банковские ID.
+
+<span class="key">Questions:</span>
+  – что является стабильным идентификатором у каждого банка?
+  – считаем ли дублем операцию, исправленную банком задним числом?</pre>
+        </section>
+
+        <section class="variant variant-e">
+          <h2>E. Тёмно-синий фон, но светлый текст</h2>
+          <p class="variant-note">Сохраняет тёмный кодовый блок, убирает проблему зелёного текста и повышает размер.</p>
+          <pre class="sample"><span class="key">Story:</span>
+  Импортировать операции без повторного создания дублей.
+
+<span class="key">Rule:</span>
+  Операция, ранее импортированная из этого счёта, повторно не создаётся.
+
+<span class="key">Examples:</span>
+  – тот же файл загружен второй раз;
+  – другая выписка содержит ранее импортированную операцию;
+  – одинаковая сумма и дата, но разные банковские ID.
+
+<span class="key">Questions:</span>
+  – что является стабильным идентификатором у каждого банка?
+  – считаем ли дублем операцию, исправленную банком задним числом?</pre>
+        </section>
+
+        <section class="variant variant-f">
+          <h2>F. Оливковый терминальный вариант</h2>
+          <p class="variant-note">По вашему скриншоту: тёмный оливковый фон, жёлтый основной текст, бирюзовые ключи.</p>
+          <pre class="sample"><span class="key">Story:</span>
+  Импортировать операции без повторного создания дублей.
+
+<span class="key">Rule:</span>
+  Операция, ранее импортированная из этого счёта, повторно не создаётся.
+
+<span class="key">Examples:</span>
+  – тот же файл загружен второй раз;
+  – другая выписка содержит ранее импортированную операцию;
+  – одинаковая сумма и дата, но разные банковские ID.
+
+<span class="key">Questions:</span>
+  – что является стабильным идентификатором у каждого банка?
+  – считаем ли дублем операцию, исправленную банком задним числом?</pre>
+        </section>
+      </article>
+    </main>
+  </section>
+</body>
+</html>
