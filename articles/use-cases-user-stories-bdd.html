@@ -16,6 +16,7 @@
   <meta property="og:image:alt" content="Запутанное требование превращается в ясный маршрут от цели через поставляемый срез к проверяемому результату">
   <meta property="article:published_time" content="2026-08-07T00:00:00+05:00">
   <meta property="article:author" content="Данил Письменный">
+  <meta property="article:section" content="Объяснение">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Use cases, user stories и BDD: три масштаба хорошего ТЗ для AI-агента">
   <meta name="twitter:description" content="Как связать use cases, user stories и BDD в компактное и проверяемое ТЗ для агентской разработки.">
@@ -36,6 +37,7 @@
     "description": "Как связать use cases, user stories и BDD в компактное и проверяемое ТЗ для агентской разработки.",
     "datePublished": "2026-08-07",
     "dateModified": "2026-08-07",
+    "articleSection": "Объяснение",
     "mainEntityOfPage": "https://pismenny.ru/articles/use-cases-user-stories-bdd.html",
     "image": "https://pismenny.ru/articles/assets/use-cases-user-stories-bdd-hero.png",
     "author": {"@type": "Person", "name": "Данил Письменный", "url": "https://pismenny.ru/"}
@@ -52,13 +54,13 @@
     <main id="article-content">
       <article class="longread">
         <h1>Use cases, user stories и BDD: три масштаба хорошего ТЗ для AI-агента</h1>
-        <p class="article-meta"><span class="draft-label">Черновик</span> · 7 августа 2026 · 16 минут чтения</p>
+        <p class="article-meta"><span class="draft-label">Черновик</span> · <span class="article-type-label">Объяснение</span> · 7 августа 2026 · 16 минут чтения</p>
         <p class="article-deck">Как связать use cases, user stories и BDD в компактное и проверяемое ТЗ для агентской разработки.</p>
         <figure class="article-hero">
           <img src="assets/use-cases-user-stories-bdd-hero.png" alt="Запутанное требование превращается в ясный маршрут от цели через поставляемый срез к проверяемому результату" width="1200" height="630">
         </figure>
 <blockquote><p>Use case удерживает целостную цель. User story ограничивает порцию поставки. BDD-сценарий делает ожидаемое поведение проверяемым.</p></blockquote>
-<p>Я заметил, что AI-агент пишет код гораздо увереннее, когда в ТЗ есть use cases. Это не случайность.</p>
+<p>Я заметил, что AI-агент чаще выдаёт корректный результат, когда в ТЗ есть use cases. Это наблюдение согласуется с тем, как use case удерживает контекст цели и альтернативных путей.</p>
 <p>Обычному разработчику недостающий контекст можно передать в разговоре. Он спросит, что делать с дублем, можно ли повторить операцию, кто увидит ошибку и считается ли частичный результат успехом. Coding agent тоже иногда задаёт вопросы, но чаще заполняет пробелы наиболее правдоподобными догадками. Код получается логичным — и не тем.</p>
 <p>Use cases, user stories и BDD появились задолго до LLM. Каждый подход решал свою проблему разработки:</p>
 <ul><li><strong>use case</strong> не даёт потерять пользовательскую цель и альтернативные пути к ней;</li><li><strong>user story</strong> превращает потребность в небольшую обсуждаемую единицу поставки;</li><li><strong>BDD</strong> переводит правила в конкретные примеры, по которым можно однозначно проверить поведение.</li></ul>
@@ -67,7 +69,7 @@
       ↓
 use case: целая цель и все существенные пути
       ↓
-user stories: независимо поставляемые срезы
+user stories: кандидаты на независимо поставляемые срезы
       ↓
 BDD examples: точные наблюдаемые примеры
       ↓
@@ -164,12 +166,13 @@ Extensions:
 <h3>Сильная и слабая стороны</h3>
 <p>Use case силён там, где важна связность:</p>
 <ul><li>длинный пользовательский путь;</li><li>несколько внешних участников;</li><li>транзакции и откаты;</li><li>права доступа;</li><li>ошибки, повторы и частичный успех;</li><li>интеграции и асинхронные события.</li></ul>
-<p>Но use case плохо выполняет роль единицы спринта. Целая цель может быть слишком большой, а полезный релиз — содержать лишь несколько её потоков. Для нарезки поставки нужна user story.</p>
+<p>Но use case обычно не предназначен быть единицей планирования спринта. Целая цель может быть слишком большой, а полезный релиз — содержать лишь несколько её потоков. Для нарезки поставки удобнее использовать user story.</p>
 <h2>2. User story: договорённость о следующей порции ценности</h2>
 <h3>Story — не мини-спецификация</h3>
 <p>User stories пришли из Extreme Programming. Их классический смысл лучше всего передаёт формула Рона Джеффриса <strong>3C</strong>:</p>
 <ul><li><strong>Card</strong> — короткая карточка-напоминание;</li><li><strong>Conversation</strong> — разговор, в котором команда выясняет детали;</li><li><strong>Confirmation</strong> — примеры или критерии, подтверждающие выполнение.</li></ul>
 <p>Карточка не заменяет требование. Она хранит достаточно информации, чтобы нужный разговор состоялся вовремя. Билл Уэйк подчёркивал эту конструкцию, когда предложил критерий INVEST для хороших stories. <a href="https://xp123.com/invest-in-good-stories-and-smart-tasks/" target="_blank" rel="nofollow noopener noreferrer">Bill Wake, <em>INVEST in Good Stories, and SMART Tasks</em></a></p>
+<p>Acceptance criteria — это договорённость о том, что считается готовым. BDD examples — конкретные примеры, которые помогают эту договорённость обнаружить, сформулировать и проверить.</p>
 <p>Популярный шаблон:</p>
 <pre lang="text" class="notranslate"><code class="language-text">As a &lt;role&gt;
 I want &lt;capability&gt;
@@ -208,7 +211,7 @@ US-07.4 — выдать понятный отчёт по ошибочным с�
 <p>Современная формулировка Cucumber разделяет ежедневную практику BDD на три стадии:</p>
 <ol><li><strong>Discovery</strong> — вместе исследовать изменение через правила, примеры и вопросы.</li><li><strong>Formulation</strong> — записать согласованные примеры точно и понятно человеку.</li><li><strong>Automation</strong> — связать примеры с исполняемыми проверками и реализовать поведение.</li></ol>
 <p><a href="https://cucumber.io/docs/bdd/" target="_blank" rel="nofollow noopener noreferrer">Cucumber, <em>Behaviour-Driven Development</em></a></p>
-<p>Это важная последовательность. Написать <code>.feature</code> после готового кода — нормальный способ автоматизации тестов, но не вся практика BDD. Запустить Cucumber — тоже не значит сделать discovery.</p>
+<p>Это важная последовательность. В строгом понимании Cucumber написать <code>.feature</code> после готового кода — нормальный способ автоматизации тестов, но не полный BDD-процесс. Запустить Cucumber — тоже не значит провести discovery.</p>
 <h3>Rule → Examples → Questions</h3>
 <p>BDD начинается не с ключевого слова <code>Given</code>, а с обнаружения правил и пограничных случаев.</p>
 <p>Для story о дублях разговор может выглядеть так:</p>
@@ -228,30 +231,36 @@ Questions:
   - считаем ли дублем операцию, исправленную банком задним числом?</code></pre>
 <p>В технике Example Mapping story, rules, examples и questions специально разделяют. Много правил сигнализирует, что story велика; много вопросов — что она не готова; несколько разных примеров уточняют смысл правила. <a href="https://cucumber.io/blog/bdd/example-mapping-introduction/" target="_blank" rel="nofollow noopener noreferrer">Matt Wynne, <em>Introducing Example Mapping</em></a></p>
 <h3>Given / When / Then — грамматика одного примера</h3>
-<p>Согласованный пример удобно сформулировать так:</p>
-<pre lang="gherkin" class="notranslate"><code class="language-gherkin">Scenario: Повторная загрузка того же файла
-  Given выписка с банковскими ID &quot;A-100&quot; и &quot;A-101&quot; уже импортирована
-  When бухгалтер повторно импортирует эту выписку
-  Then новые операции не создаются
-  And результат сообщает о 2 пропущенных дублях</code></pre>
+<p>Согласованный пример удобно сформулировать так. Ниже показан полноценный минимальный фрагмент <code>.feature</code>:</p>
+<pre lang="gherkin" class="notranslate"><code class="language-gherkin">Feature: Импорт банковской выписки
+
+  Scenario: Повторная загрузка того же файла
+    Given выписка с банковскими ID &quot;A-100&quot; и &quot;A-101&quot; уже импортирована
+    When бухгалтер повторно импортирует эту выписку
+    Then новые операции не создаются
+    And результат сообщает о 2 пропущенных дублях</code></pre>
 <p>Семантика частей:</p>
 <ul><li><strong>Given</strong> — существенное начальное состояние, контекст примера;</li><li><strong>When</strong> — одно событие или действие, поведение под проверкой;</li><li><strong>Then</strong> — наблюдаемый результат для пользователя или внешней системы.</li></ul>
 <p><code>And</code> и <code>But</code> только делают текст естественнее. Они не создают новую фазу.</p>
 <p>Официальная документация Gherkin советует проверять наблюдаемый выход, а не внутреннюю запись в базе. Она также рекомендует описывать поведение независимо от интерфейса: <code>When Bob logs in</code>, а не последовательность заполнения полей и кликов. <a href="https://cucumber.io/docs/gherkin/reference/" target="_blank" rel="nofollow noopener noreferrer">Cucumber, <em>Gherkin Reference</em></a> и <a href="https://cucumber.io/docs/bdd/better-gherkin/" target="_blank" rel="nofollow noopener noreferrer"><em>Writing better Gherkin</em></a></p>
 <h3>Конкретность важнее торжественности синтаксиса</h3>
-<p>Плохой сценарий:</p>
-<pre lang="gherkin" class="notranslate"><code class="language-gherkin">Scenario: Импорт работает правильно
-  Given у пользователя есть файл
-  When пользователь импортирует файл
-  Then файл должен успешно импортироваться</code></pre>
+<p>Плохой сценарий (фрагмент, намеренно оставленный неточным):</p>
+<pre lang="gherkin" class="notranslate"><code class="language-gherkin">Feature: Импорт банковской выписки
+
+  Scenario: Импорт работает правильно
+    Given у пользователя есть файл
+    When пользователь импортирует файл
+    Then файл должен успешно импортироваться</code></pre>
 <p>Он выглядит формально, но не задаёт oracle: что именно означает «правильно» и «успешно»?</p>
 <p>Хороший сценарий содержит значения, которые снимают неоднозначность:</p>
-<pre lang="gherkin" class="notranslate"><code class="language-gherkin">Scenario: Из смешанной выписки импортируются только новые операции
-  Given на счёте уже есть операция с банковским ID &quot;A-100&quot;
-  And выписка содержит операции &quot;A-100&quot;, &quot;A-101&quot; и &quot;A-102&quot;
-  When бухгалтер подтверждает импорт
-  Then система создаёт 2 операции
-  And итог показывает &quot;Добавлено: 2, дубли: 1, ошибки: 0&quot;</code></pre>
+<pre lang="gherkin" class="notranslate"><code class="language-gherkin">Feature: Импорт банковской выписки
+
+  Scenario: Из смешанной выписки импортируются только новые операции
+    Given на счёте уже есть операция с банковским ID &quot;A-100&quot;
+    And выписка содержит операции &quot;A-100&quot;, &quot;A-101&quot; и &quot;A-102&quot;
+    When бухгалтер подтверждает импорт
+    Then система создаёт 2 операции
+    And итог показывает &quot;Добавлено: 2, дубли: 1, ошибки: 0&quot;</code></pre>
 <p>Конкретные примеры не заменяют общее правило. Один пример не доказывает, что мы поняли все случаи. Поэтому хороший пакет хранит оба уровня:</p>
 <pre lang="text" class="notranslate"><code class="language-text">Rule: обобщение, которое должно быть истинно
 Examples: несколько точек, уточняющих границы правила</code></pre>
@@ -272,19 +281,21 @@ In scope: дубли с тем же банковским ID в пределах 
 Out of scope: исправленные банком операции; поиск дублей без банковского ID</code></pre>
 <p>Агент не обязан реализовывать все найденные в use case расширения за один проход.</p>
 <h3>Уровень 3. BDD уточняет правила</h3>
-<pre lang="gherkin" class="notranslate"><code class="language-gherkin">Rule: Банковский ID уникален в пределах счёта, но не всей организации
+<pre lang="gherkin" class="notranslate"><code class="language-gherkin">Feature: Импорт банковской выписки
 
-Scenario: Тот же банковский ID на том же счёте
-  Given на счёте &quot;KZ-01&quot; есть операция с банковским ID &quot;A-100&quot;
-  When на счёт &quot;KZ-01&quot; импортируется операция с ID &quot;A-100&quot;
-  Then новая операция не создаётся
-  And операция учитывается как дубль
+  Rule: Банковский ID уникален в пределах счёта, но не всей организации
 
-Scenario: Тот же банковский ID на другом счёте
-  Given на счёте &quot;KZ-01&quot; есть операция с банковским ID &quot;A-100&quot;
-  When на счёт &quot;KZ-02&quot; импортируется операция с ID &quot;A-100&quot;
-  Then новая операция создаётся
-  And операция не учитывается как дубль</code></pre>
+    Scenario: Тот же банковский ID на том же счёте
+      Given на счёте &quot;KZ-01&quot; есть операция с банковским ID &quot;A-100&quot;
+      When на счёт &quot;KZ-01&quot; импортируется операция с ID &quot;A-100&quot;
+      Then новая операция не создаётся
+      And операция учитывается как дубль
+
+    Scenario: Тот же банковский ID на другом счёте
+      Given на счёте &quot;KZ-01&quot; есть операция с банковским ID &quot;A-100&quot;
+      When на счёт &quot;KZ-02&quot; импортируется операция с ID &quot;A-100&quot;
+      Then новая операция создаётся
+      And операция не учитывается как дубль</code></pre>
 <p>Здесь проявилась деталь, которой не было в одной фразе «пропускать дубли»: область уникальности. Именно такие пробелы coding agent иначе заполняет случайным архитектурным решением.</p>
 <h3>Трассировка</h3>
 <p>Связь можно сделать машиночитаемой без тяжёлой бюрократии:</p>
@@ -408,7 +419,7 @@ BDD examples говорят:
 <ul><li>цель не растворяется в задачах;</li><li>задачи не разрастаются до всего продукта;</li><li>правила не остаются абстрактными;</li><li>примеры можно превратить в проверки;</li><li>неизвестное отмечено как неизвестное, а не отдано модели на догадку.</li></ul>
 <p>Именно в таком виде классические техники анализа становятся не бюрократией, а интерфейсом между человеческим намерением и автономной реализацией.</p>
 <h2>Классические и базовые источники</h2>
-<ol><li><a href="https://www.ivarjacobson.com/publications/use-case-foundation" target="_blank" rel="nofollow noopener noreferrer">Ivar Jacobson, Alistair Cockburn — <em>Use-Case Foundation</em></a> — краткая современная фиксация общих основ use case: система, актор, цель и сеть потоков.</li><li><a href="https://courses.cs.duke.edu/compsci308/current/readings/cockburn_use_cases.pdf" target="_blank" rel="nofollow noopener noreferrer">Alistair Cockburn — <em>Writing Effective Use Cases: Reminders</em></a> — памятка из классической книги: уровни целей, точность, основной сценарий и extensions.</li><li>Alistair Cockburn — <em>Writing Effective Use Cases</em>, Addison-Wesley, 2001 — основная книга по goal-oriented текстовым use cases.</li><li><a href="https://martinfowler.com/bliki/UseCasesAndStories.html" target="_blank" rel="nofollow noopener noreferrer">Martin Fowler — <em>Use Cases and Stories</em></a> — точное объяснение, почему use cases и user stories организуют требования для разных целей.</li><li><a href="https://xp123.com/invest-in-good-stories-and-smart-tasks/" target="_blank" rel="nofollow noopener noreferrer">Bill Wake — <em>INVEST in Good Stories, and SMART Tasks</em></a> — первоисточник эвристики INVEST и напоминание о Card, Conversation, Confirmation.</li><li>Mike Cohn — <em>User Stories Applied: For Agile Software Development</em>, Addison-Wesley, 2004 — классическое систематическое изложение user stories.</li><li><a href="https://dannorth.net/blog/introducing-bdd/" target="_blank" rel="nofollow noopener noreferrer">Dan North — <em>Introducing BDD</em></a> — исходная мотивация BDD, story template и Given / When / Then для acceptance criteria.</li><li><a href="https://cucumber.io/docs/bdd/" target="_blank" rel="nofollow noopener noreferrer">Cucumber — <em>Behaviour-Driven Development</em></a> — BDD как Discovery, Formulation и Automation.</li><li><a href="https://cucumber.io/docs/gherkin/reference/" target="_blank" rel="nofollow noopener noreferrer">Cucumber — <em>Gherkin Reference</em></a> — точная семантика Feature, Rule, Scenario, Given, When и Then.</li><li><a href="https://cucumber.io/blog/bdd/example-mapping-introduction/" target="_blank" rel="nofollow noopener noreferrer">Matt Wynne — <em>Introducing Example Mapping</em></a> — практическая связь story, rules, examples и questions.</li></ol>
+<ol><li><a href="https://www.ivarjacobson.com/publications/use-case-foundation" target="_blank" rel="nofollow noopener noreferrer">Ivar Jacobson, Alistair Cockburn — <em>Use-Case Foundation</em></a> — краткая современная фиксация общих основ use case: система, актор, цель и сеть потоков.</li><li><a href="https://courses.cs.duke.edu/compsci308/current/readings/cockburn_use_cases.pdf" target="_blank" rel="nofollow noopener noreferrer">Alistair Cockburn — <em>Writing Effective Use Cases: Reminders</em></a> — памятка из классической книги: уровни целей, точность, основной сценарий и extensions.</li><li>Alistair Cockburn — <em>Writing Effective Use Cases</em>, Addison-Wesley, 2001 — основная книга по goal-oriented текстовым use cases.</li><li><a href="https://martinfowler.com/bliki/UseCasesAndStories.html" target="_blank" rel="nofollow noopener noreferrer">Martin Fowler — <em>Use Cases and Stories</em></a> — точное объяснение, почему use cases и user stories организуют требования для разных целей.</li><li><a href="https://xp123.com/invest-in-good-stories-and-smart-tasks/" target="_blank" rel="nofollow noopener noreferrer">Bill Wake — <em>INVEST in Good Stories, and SMART Tasks</em></a> — первоисточник эвристики INVEST и напоминание о Card, Conversation, Confirmation.</li><li>Mike Cohn — <em>User Stories Applied: For Agile Software Development</em>, Addison-Wesley, 2004 — классическое систематическое изложение user stories.</li><li><a href="https://ronjeffries.com/xprog/articles/expcardconversationconfirmation/" target="_blank" rel="nofollow noopener noreferrer">Ron Jeffries — <em>Essential XP: Card, Conversation, Confirmation</em></a> — классическая формула трёх составляющих user story.</li><li><a href="https://dannorth.net/blog/introducing-bdd/" target="_blank" rel="nofollow noopener noreferrer">Dan North — <em>Introducing BDD</em></a> — исходная мотивация BDD, story template и Given / When / Then для acceptance criteria.</li><li><a href="https://cucumber.io/docs/bdd/" target="_blank" rel="nofollow noopener noreferrer">Cucumber — <em>Behaviour-Driven Development</em></a> — BDD как Discovery, Formulation и Automation.</li><li><a href="https://cucumber.io/docs/gherkin/reference/" target="_blank" rel="nofollow noopener noreferrer">Cucumber — <em>Gherkin Reference</em></a> — точная семантика Feature, Rule, Scenario, Given, When и Then.</li><li><a href="https://cucumber.io/blog/bdd/example-mapping-introduction/" target="_blank" rel="nofollow noopener noreferrer">Matt Wynne — <em>Introducing Example Mapping</em></a> — практическая связь story, rules, examples и questions.</li></ol>
       </article>
     </main>
     <footer class="article-footer">
