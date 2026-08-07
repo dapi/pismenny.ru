@@ -32,25 +32,18 @@ This is a static personal website for Danil Pismenny (pismenny.ru) hosted on Git
 
 ## Deployment
 
-The site is deployed via GitHub Pages with custom domain `pismenny.ru` (configured via `CNAME` file).
-
-**To deploy changes**: Push to the `master` branch. The explicit workflow in
-`.github/workflows/pages.yml` publishes the static site to GitHub Pages.
+Canonical deployment, synchronization, public verification, and 404 diagnostics:
+[`docs/deployment.md`](docs/deployment.md).
 
 ### Draft articles
 
-Article URLs and file paths must never contain `draft`. A draft status is expressed only by
-metadata, robots directives, and visible status text in the page.
+Canonical article presentation, draft lifecycle, metadata, links, and release checks:
+[`docs/article-creation-checklist.md`](docs/article-creation-checklist.md).
 
-Articles may be published on the site in draft status so they can be reviewed by
-direct link. A draft article must:
+### Site content
 
-- include `noindex,nofollow,noarchive` for `robots` and `googlebot`;
-- be clearly marked as `Черновик` in the visible article metadata;
-- not be linked from `articles/index.html`, `sitemap.xml`, or `articles/feed.xml`.
-
-When an article is approved, remove the draft marker and `noindex` directives,
-then add it to the article index and other discovery feeds as appropriate.
+Canonical cards, collections, navigation links, and standalone pages outside blog longreads:
+[`docs/site-content-contract.md`](docs/site-content-contract.md).
 
 ## Working with the Codebase
 
