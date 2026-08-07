@@ -4,15 +4,8 @@
   <link href="https://pismenny.ru/articles/feed.xml" rel="self"/>
   <link href="https://pismenny.ru/articles/"/>
   <id>https://pismenny.ru/articles/</id>
-  <updated>2026-08-07T00:00:00+05:00</updated>
+  <updated>2026-08-06T13:58:39+05:00</updated>
   <author><name>Данил Письменный</name></author>
-  <entry>
-    <title>MECE в агентской разработке: как делить работу без пересечений и пробелов</title>
-    <link href="https://pismenny.ru/articles/mece-agentic-development.html"/>
-    <id>https://pismenny.ru/articles/mece-agentic-development.html</id>
-    <updated>2026-08-07T00:00:00+05:00</updated>
-    <summary>Как принцип MECE помогает структурировать задачи, требования и ответственность в агентной разработке.</summary>
-  </entry>
   <entry>
     <title>Не нанимайте AI-агентов на человеческие должности</title>
     <link href="https://pismenny.ru/articles/do-not-hire-ai-agents-for-human-roles.html"/>
