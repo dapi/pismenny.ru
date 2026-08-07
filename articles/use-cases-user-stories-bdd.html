@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Use cases, user stories и BDD: три масштаба хорошего ТЗ для AI-агента — Данил Письменный</title>
+  <meta name="description" content="Как связать use cases, user stories и BDD в компактное и проверяемое ТЗ для агентской разработки.">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="googlebot" content="noindex,nofollow,noarchive">
+  <link rel="canonical" href="https://pismenny.ru/articles/use-cases-user-stories-bdd.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://pismenny.ru/articles/use-cases-user-stories-bdd.html">
+  <meta property="og:title" content="Use cases, user stories и BDD: три масштаба хорошего ТЗ для AI-агента">
+  <meta property="og:description" content="Как связать use cases, user stories и BDD в компактное и проверяемое ТЗ для агентской разработки.">
+  <meta property="og:image" content="https://pismenny.ru/articles/assets/use-cases-user-stories-bdd-hero.png">
+  <meta property="og:image:alt" content="Запутанное требование превращается в ясный маршрут от цели через поставляемый срез к проверяемому результату">
+  <meta property="article:published_time" content="2026-08-07T00:00:00+05:00">
+  <meta property="article:author" content="Данил Письменный">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Use cases, user stories и BDD: три масштаба хорошего ТЗ для AI-агента">
+  <meta name="twitter:description" content="Как связать use cases, user stories и BDD в компактное и проверяемое ТЗ для агентской разработки.">
+  <meta name="twitter:image" content="https://pismenny.ru/articles/assets/use-cases-user-stories-bdd-hero.png">
+  <meta name="twitter:image:alt" content="Запутанное требование превращается в ясный маршрут от цели через поставляемый срез к проверяемому результату">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="preload" as="image" href="assets/use-cases-user-stories-bdd-hero.png" type="image/png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yegor256/tacit@gh-pages/tacit-css-1.3.9.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="article.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Use cases, user stories и BDD: три масштаба хорошего ТЗ для AI-агента",
+    "description": "Как связать use cases, user stories и BDD в компактное и проверяемое ТЗ для агентской разработки.",
+    "datePublished": "2026-08-07",
+    "dateModified": "2026-08-07",
+    "mainEntityOfPage": "https://pismenny.ru/articles/use-cases-user-stories-bdd.html",
+    "image": "https://pismenny.ru/articles/assets/use-cases-user-stories-bdd-hero.png",
+    "author": {"@type": "Person", "name": "Данил Письменный", "url": "https://pismenny.ru/"}
+  }
+  </script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#article-content">К статье</a>
+  <section class="article-shell">
+    <nav class="article-nav" aria-label="Навигация">
+      <a href="/">Данил Письменный</a>
+      <a href="/articles/">Все статьи</a>
+    </nav>
+    <main id="article-content">
+      <article class="longread">
+        <h1>Use cases, user stories и BDD: три масштаба хорошего ТЗ для AI-агента</h1>
+        <p class="article-meta"><span class="draft-label">Черновик</span> · 7 августа 2026 · 16 минут чтения</p>
+        <p class="article-deck">Как связать use cases, user stories и BDD в компактное и проверяемое ТЗ для агентской разработки.</p>
+        <figure class="article-hero">
+          <img src="assets/use-cases-user-stories-bdd-hero.png" alt="Запутанное требование превращается в ясный маршрут от цели через поставляемый срез к проверяемому результату" width="1200" height="630">
+        </figure>
+<blockquote><p>Use case удерживает целостную цель. User story ограничивает порцию поставки. BDD-сценарий делает ожидаемое поведение проверяемым.</p></blockquote>
+<p>Я заметил, что AI-агент пишет код гораздо увереннее, когда в ТЗ есть use cases. Это не случайность.</p>
+<p>Обычному разработчику недостающий контекст можно передать в разговоре. Он спросит, что делать с дублем, можно ли повторить операцию, кто увидит ошибку и считается ли частичный результат успехом. Coding agent тоже иногда задаёт вопросы, но чаще заполняет пробелы наиболее правдоподобными догадками. Код получается логичным — и не тем.</p>
+<p>Use cases, user stories и BDD появились задолго до LLM. Каждый подход решал свою проблему разработки:</p>
+<ul><li><strong>use case</strong> не даёт потерять пользовательскую цель и альтернативные пути к ней;</li><li><strong>user story</strong> превращает потребность в небольшую обсуждаемую единицу поставки;</li><li><strong>BDD</strong> переводит правила в конкретные примеры, по которым можно однозначно проверить поведение.</li></ul>
+<p>Их часто считают тремя форматами одного и того же требования. Это ошибка. Они работают на разных масштабах и лучше всего дополняют друг друга.</p>
+<pre lang="text" class="notranslate"><code class="language-text">зачем и для кого
+      ↓
+use case: целая цель и все существенные пути
+      ↓
+user stories: независимо поставляемые срезы
+      ↓
+BDD examples: точные наблюдаемые примеры
+      ↓
+автотесты и реализованный код</code></pre>
+<p>Для агентской разработки эта связка особенно полезна: она превращает подразумеваемую человеческую договорённость в компактную, трассируемую и проверяемую спецификацию.</p>
+<h2>Короткий ответ: в чём разница</h2>
+<div class="table-scroll" role="region" aria-label="Таблица" tabindex="0"><table><thead><tr>
+<th scope="col">Артефакт</th>
+<th scope="col">Главный вопрос</th>
+<th scope="col">Охват</th>
+<th scope="col">Основная ценность</th>
+</tr></thead><tbody>
+<tr><td><strong>Use case</strong></td><td>Как актор достигает цели с помощью системы?</td><td>Цель целиком: успешный, альтернативные и неуспешные пути</td><td>Полнота поведения и граница системы</td></tr>
+<tr><td><strong>User story</strong></td><td>Какую небольшую ценность поставим следующей?</td><td>Планируемый вертикальный срез</td><td>Приоритизация, переговоры и планирование</td></tr>
+<tr><td><strong>BDD scenario</strong></td><td>Как система должна повести себя в конкретном примере?</td><td>Один пример одного правила</td><td>Однозначная проверка и исполняемая спецификация</td></tr>
+</tbody></table></div>
+<p>Самая полезная формула:</p>
+<pre lang="text" class="notranslate"><code class="language-text">use case ≠ большая user story
+user story ≠ короткий use case
+BDD ≠ синтаксис Given / When / Then</code></pre>
+<p>Use case организует требования вокруг <strong>цели пользователя</strong>. User story организует работу вокруг <strong>поставляемого изменения</strong>. BDD организует совместное понимание вокруг <strong>конкретных примеров поведения</strong>.</p>
+<h2>1. Use case: цель и все пути к ней</h2>
+<h3>Откуда взялась идея</h3>
+<p>Use cases ввёл в программную инженерию Ивар Якобсон. Позже Алистер Кокберн развил практику goal-oriented use cases в книге <em>Writing Effective Use Cases</em>.</p>
+<p>Современная совместная формулировка Якобсона и Кокберна проста:</p>
+<blockquote><p>Use case — это все способы использования системы для достижения цели конкретного пользователя.</p></blockquote>
+<p>В этой фразе важны слова <strong>все способы</strong>. Один линейный happy path — это не весь use case, а только один его сценарий. Полноценный use case объединяет нормальный путь, допустимые варианты, отказы и восстановление. <a href="https://www.ivarjacobson.com/publications/use-case-foundation" target="_blank" rel="nofollow noopener noreferrer">Ivar Jacobson &amp; Alistair Cockburn, <em>Use-Case Foundation</em></a></p>
+<h3>Четыре опоры use case</h3>
+<p>У хорошего use case есть:</p>
+<ol><li><strong>System of Interest</strong> — система, поведение которой мы описываем как чёрный ящик.</li><li><strong>Primary actor</strong> — роль, инициирующая взаимодействие ради цели.</li><li><strong>Goal</strong> — наблюдаемый полезный результат для актора.</li><li><strong>Flows</strong> — основной и альтернативные пути от триггера к успеху или осмысленному отказу.</li></ol>
+<p>Актор — не обязательно человек. Это роль с поведением на границе системы: клиент, оператор, планировщик, платёжный шлюз, внешняя информационная система. Один человек может играть несколько ролей, а одну роль — много людей.</p>
+<p>Цель тоже не равна действию в интерфейсе. «Нажать кнопку “Импортировать”» — не цель. «Добавить операции из банковской выписки в учёт» — цель. Интерфейс можно заменить, а цель останется.</p>
+<h3>Use case — текст, а не овал на диаграмме</h3>
+<p>UML-диаграмма с человечками и овалами может показать границу системы и каталог целей. Она почти ничего не говорит о поведении внутри цели.</p>
+<p>Ценность use case находится в тексте: кто чего хочет, что происходит на основном пути, где он разветвляется и что гарантирует система. Мартин Фаулер прямо отмечает, что UML стандартизировал диаграмму, но не самый ценный текст use case. <a href="https://martinfowler.com/bliki/UseCase.html" target="_blank" rel="nofollow noopener noreferrer">Martin Fowler, <em>Use Case</em></a></p>
+<p>Поэтому для ТЗ агенту список овалов — только индекс. Рабочий материал начинается с потоков.</p>
+<h3>Goal levels: не провалиться в кнопки</h3>
+<p>Кокберн различает уровни целей. Практически достаточно трёх:</p>
+<ul><li><strong>summary</strong> — большая бизнес-активность из нескольких пользовательских целей: «Вести бухгалтерский учёт»;</li><li><strong>user goal</strong> — результат, который актор хочет получить за один осмысленный сеанс: «Импортировать банковскую выписку»;</li><li><strong>subfunction</strong> — шаг, нужный системе или верхнему use case: «Определить кодировку CSV».</li></ul>
+<p>Основной рабочий уровень — <strong>user goal</strong>, который Кокберн метафорически называет sea level. Если описание заполняется кликами, HTTP-запросами и внутренними функциями, надо несколько раз спросить «зачем?», пока не проявится пользовательская цель. Если use case занимает недели непрерывного бизнеса и включает десятки самостоятельных целей, надо спросить «как?», чтобы спуститься на уровень ниже.</p>
+<h3>Рабочий шаблон</h3>
+<p>Не каждый use case нужно оформлять полностью. Кокберн советует двигаться вширь: сначала акторы и цели, затем краткие описания, потом основные сценарии и лишь затем расширения. Читаемый черновик полезнее идеального шаблона, который никто не закончил. <a href="https://courses.cs.duke.edu/compsci308/current/readings/cockburn_use_cases.pdf" target="_blank" rel="nofollow noopener noreferrer">Alistair Cockburn, <em>Writing Effective Use Cases: Reminders</em></a></p>
+<p>Для сложной или рискованной функции подходит такой шаблон:</p>
+<pre lang="markdown" class="notranslate"><code class="language-markdown">## UC-07. Импортировать банковскую выписку
+
+Scope: Accounting System
+Level: user goal
+Primary actor: Бухгалтер
+Supporting actors: Файловое хранилище
+Trigger: Бухгалтер выбирает подготовленную банковскую выписку
+
+Stakeholders and interests:
+- Бухгалтер хочет быстро получить корректные операции без дублей.
+- Владелец бизнеса хочет, чтобы итоговые суммы можно было проверить.
+
+Preconditions:
+- Бухгалтер авторизован и имеет доступ к организации.
+- Организация и банковский счёт уже существуют.
+
+Minimal guarantees:
+- Некорректный импорт не изменяет существующие операции.
+- Исходный файл и причина отказа доступны для аудита.
+
+Success guarantees:
+- Новые операции сохранены ровно один раз.
+- Бухгалтер видит число добавленных, пропущенных и ошибочных строк.
+
+Main success scenario:
+1. Бухгалтер передаёт системе выписку для выбранного счёта.
+2. Система распознаёт формат и показывает период, валюту и число операций.
+3. Бухгалтер подтверждает импорт.
+4. Система добавляет новые операции.
+5. Система показывает итог импорта.
+
+Extensions:
+2a. Формат не поддерживается:
+    1. Система отклоняет файл и объясняет допустимые форматы.
+    2. Use case завершается без изменения операций.
+2b. Валюта выписки не совпадает с валютой счёта:
+    1. Система предупреждает о несовпадении и не разрешает подтверждение.
+3a. Бухгалтер отменяет импорт:
+    1. Система удаляет временные данные и ничего не записывает.
+4a. Часть операций уже импортирована:
+    1. Система пропускает дубли.
+    2. Система продолжает импорт новых операций.
+4b. Запись новых операций завершается ошибкой:
+    1. Система откатывает весь импорт.
+    2. Система сохраняет диагностический идентификатор ошибки.</code></pre>
+<p>Это не обязательный ритуал. Поля нужны, только если они уменьшают неоднозначность. Для простого CRUD-действия достаточно brief. Для денег, прав доступа, идемпотентности и интеграций расширенный формат окупается быстро.</p>
+<h3>Как писать шаги</h3>
+<p>Классические эвристики Кокберна хорошо работают и для AI-агентов:</p>
+<ul><li>один шаг выражает намерение или наблюдаемый результат, а не жест мышью;</li><li>в каждом шаге ясно, кто действует: актор или система;</li><li>система описывается как чёрный ящик;</li><li>основной сценарий содержит только успешный путь;</li><li>ответвления привязаны к конкретному шагу: <code>2a</code>, <code>4b</code>;</li><li>расширение либо возвращается в основной путь, либо заканчивается успехом или отказом;</li><li>данные называются доменными именами, а схема полей живёт в отдельном контракте.</li></ul>
+<p>Полезная проверка каждого шага: <strong>сохранится ли его смысл, если заменить web-интерфейс на CLI или API?</strong> Если нет, в use case, вероятно, просочилась реализация.</p>
+<h3>Сильная и слабая стороны</h3>
+<p>Use case силён там, где важна связность:</p>
+<ul><li>длинный пользовательский путь;</li><li>несколько внешних участников;</li><li>транзакции и откаты;</li><li>права доступа;</li><li>ошибки, повторы и частичный успех;</li><li>интеграции и асинхронные события.</li></ul>
+<p>Но use case плохо выполняет роль единицы спринта. Целая цель может быть слишком большой, а полезный релиз — содержать лишь несколько её потоков. Для нарезки поставки нужна user story.</p>
+<h2>2. User story: договорённость о следующей порции ценности</h2>
+<h3>Story — не мини-спецификация</h3>
+<p>User stories пришли из Extreme Programming. Их классический смысл лучше всего передаёт формула Рона Джеффриса <strong>3C</strong>:</p>
+<ul><li><strong>Card</strong> — короткая карточка-напоминание;</li><li><strong>Conversation</strong> — разговор, в котором команда выясняет детали;</li><li><strong>Confirmation</strong> — примеры или критерии, подтверждающие выполнение.</li></ul>
+<p>Карточка не заменяет требование. Она хранит достаточно информации, чтобы нужный разговор состоялся вовремя. Билл Уэйк подчёркивал эту конструкцию, когда предложил критерий INVEST для хороших stories. <a href="https://xp123.com/invest-in-good-stories-and-smart-tasks/" target="_blank" rel="nofollow noopener noreferrer">Bill Wake, <em>INVEST in Good Stories, and SMART Tasks</em></a></p>
+<p>Популярный шаблон:</p>
+<pre lang="text" class="notranslate"><code class="language-text">As a &lt;role&gt;
+I want &lt;capability&gt;
+so that &lt;benefit&gt;</code></pre>
+<p>помогает назвать роль, желаемую возможность и ценность. Но шаблон — не определение user story и не гарантия качества. Плохое требование легко уложить в три строки:</p>
+<pre lang="text" class="notranslate"><code class="language-text">Как пользователь,
+я хочу микросервис импорта на Kafka,
+чтобы импортировать выписки.</code></pre>
+<p>Здесь роль ничего не уточняет, ценность тавтологична, а решение заранее вшито в потребность.</p>
+<p>Лучше:</p>
+<pre lang="text" class="notranslate"><code class="language-text">US-07.1
+Как бухгалтер,
+я хочу предварительно проверить распознанную выписку,
+чтобы не добавить операции не на тот счёт.</code></pre>
+<h3>INVEST: эвристика качества</h3>
+<p>Хорошая story стремится быть:</p>
+<ul><li><strong>Independent</strong> — поставляемой с минимальной зависимостью от соседних stories;</li><li><strong>Negotiable</strong> — оставляющей пространство для обсуждения решения;</li><li><strong>Valuable</strong> — дающей заметную ценность пользователю или бизнесу;</li><li><strong>Estimable</strong> — достаточно понятной для оценки;</li><li><strong>Small</strong> — помещающейся в короткую итерацию;</li><li><strong>Testable</strong> — допускающей ясное подтверждение результата.</li></ul>
+<p>INVEST — не приёмочный чек-лист. Это диагностическая эвристика. Например, если story невозможно оценить, проблема часто не в оценке, а в неизвестном правиле или скрытой зависимости.</p>
+<h3>User story режет use case не обязательно по шагам</h3>
+<p>Между use case и stories нет отношения один-к-одному. Фаулер формулирует различие так: use cases организуют требования в повествование о достижении цели, а stories — в куски для планирования. Одна story может реализовать:</p>
+<ul><li>весь маленький use case;</li><li>один или несколько его сценариев;</li><li>несколько шагов;</li><li>одно правило, проходящее через разные use cases;</li><li>технически необходимую возможность, не видимую отдельным шагом в пользовательском повествовании.</li></ul>
+<p><a href="https://martinfowler.com/bliki/UseCasesAndStories.html" target="_blank" rel="nofollow noopener noreferrer">Martin Fowler, <em>Use Cases and Stories</em></a></p>
+<p>Для примера с выпиской возможны такие срезы:</p>
+<pre lang="text" class="notranslate"><code class="language-text">US-07.1 — распознать поддерживаемый CSV и показать preview
+US-07.2 — подтвердить и атомарно импортировать новые операции
+US-07.3 — обнаружить и пропустить ранее импортированные операции
+US-07.4 — выдать понятный отчёт по ошибочным строкам</code></pre>
+<p>Это вертикальные срезы поведения. Story «сделать таблицу <code>transactions</code>» может быть задачей реализации, но сама по себе не поставляет пользовательскую ценность и не заменяет story.</p>
+<h3>Что меняется при работе с агентом</h3>
+<p>В классическом XP большая часть смысла находится в Conversation. У coding agent нет многолетнего общего контекста команды, а его сессия может закончиться. Поэтому карточку нельзя просто раздувать в исчерпывающий роман, но результат разговора надо материализовать:</p>
+<ul><li>решения — в rules и contracts;</li><li>конкретные примеры — в acceptance scenarios;</li><li>неизвестное — в явные open questions;</li><li>границы — в in scope / out of scope;</li><li>связь с целой целью — идентификатором use case.</li></ul>
+<p>Иначе агент получает Card без Conversation и вынужден выдумать Confirmation.</p>
+<h2>3. BDD: от спорного правила к проверяемому примеру</h2>
+<h3>BDD вырос из TDD, но не сводится к тестам</h3>
+<p>Дэн Норт описал BDD как попытку убрать путаницу вокруг TDD и говорить о <strong>поведении</strong>, а не о тестовых методах. Затем этот язык распространился с кода на анализ требований: разработчики, тестировщики и бизнес могли обсуждать систему одними доменными терминами. <a href="https://dannorth.net/blog/introducing-bdd/" target="_blank" rel="nofollow noopener noreferrer">Dan North, <em>Introducing BDD</em></a></p>
+<p>Современная формулировка Cucumber разделяет ежедневную практику BDD на три стадии:</p>
+<ol><li><strong>Discovery</strong> — вместе исследовать изменение через правила, примеры и вопросы.</li><li><strong>Formulation</strong> — записать согласованные примеры точно и понятно человеку.</li><li><strong>Automation</strong> — связать примеры с исполняемыми проверками и реализовать поведение.</li></ol>
+<p><a href="https://cucumber.io/docs/bdd/" target="_blank" rel="nofollow noopener noreferrer">Cucumber, <em>Behaviour-Driven Development</em></a></p>
+<p>Это важная последовательность. Написать <code>.feature</code> после готового кода — нормальный способ автоматизации тестов, но не вся практика BDD. Запустить Cucumber — тоже не значит сделать discovery.</p>
+<h3>Rule → Examples → Questions</h3>
+<p>BDD начинается не с ключевого слова <code>Given</code>, а с обнаружения правил и пограничных случаев.</p>
+<p>Для story о дублях разговор может выглядеть так:</p>
+<pre lang="text" class="notranslate"><code class="language-text">Story:
+  Импортировать операции без повторного создания дублей.
+
+Rule:
+  Операция, ранее импортированная из этого счёта, повторно не создаётся.
+
+Examples:
+  - тот же файл загружен второй раз;
+  - другая выписка содержит одну ранее импортированную операцию;
+  - две операции имеют одинаковую сумму и дату, но разные банковские ID.
+
+Questions:
+  - что является стабильным идентификатором у каждого поддерживаемого банка?
+  - считаем ли дублем операцию, исправленную банком задним числом?</code></pre>
+<p>В технике Example Mapping story, rules, examples и questions специально разделяют. Много правил сигнализирует, что story велика; много вопросов — что она не готова; несколько разных примеров уточняют смысл правила. <a href="https://cucumber.io/blog/bdd/example-mapping-introduction/" target="_blank" rel="nofollow noopener noreferrer">Matt Wynne, <em>Introducing Example Mapping</em></a></p>
+<h3>Given / When / Then — грамматика одного примера</h3>
+<p>Согласованный пример удобно сформулировать так:</p>
+<pre lang="gherkin" class="notranslate"><code class="language-gherkin">Scenario: Повторная загрузка того же файла
+  Given выписка с банковскими ID &quot;A-100&quot; и &quot;A-101&quot; уже импортирована
+  When бухгалтер повторно импортирует эту выписку
+  Then новые операции не создаются
+  And результат сообщает о 2 пропущенных дублях</code></pre>
+<p>Семантика частей:</p>
+<ul><li><strong>Given</strong> — существенное начальное состояние, контекст примера;</li><li><strong>When</strong> — одно событие или действие, поведение под проверкой;</li><li><strong>Then</strong> — наблюдаемый результат для пользователя или внешней системы.</li></ul>
+<p><code>And</code> и <code>But</code> только делают текст естественнее. Они не создают новую фазу.</p>
+<p>Официальная документация Gherkin советует проверять наблюдаемый выход, а не внутреннюю запись в базе. Она также рекомендует описывать поведение независимо от интерфейса: <code>When Bob logs in</code>, а не последовательность заполнения полей и кликов. <a href="https://cucumber.io/docs/gherkin/reference/" target="_blank" rel="nofollow noopener noreferrer">Cucumber, <em>Gherkin Reference</em></a> и <a href="https://cucumber.io/docs/bdd/better-gherkin/" target="_blank" rel="nofollow noopener noreferrer"><em>Writing better Gherkin</em></a></p>
+<h3>Конкретность важнее торжественности синтаксиса</h3>
+<p>Плохой сценарий:</p>
+<pre lang="gherkin" class="notranslate"><code class="language-gherkin">Scenario: Импорт работает правильно
+  Given у пользователя есть файл
+  When пользователь импортирует файл
+  Then файл должен успешно импортироваться</code></pre>
+<p>Он выглядит формально, но не задаёт oracle: что именно означает «правильно» и «успешно»?</p>
+<p>Хороший сценарий содержит значения, которые снимают неоднозначность:</p>
+<pre lang="gherkin" class="notranslate"><code class="language-gherkin">Scenario: Из смешанной выписки импортируются только новые операции
+  Given на счёте уже есть операция с банковским ID &quot;A-100&quot;
+  And выписка содержит операции &quot;A-100&quot;, &quot;A-101&quot; и &quot;A-102&quot;
+  When бухгалтер подтверждает импорт
+  Then система создаёт 2 операции
+  And итог показывает &quot;Добавлено: 2, дубли: 1, ошибки: 0&quot;</code></pre>
+<p>Конкретные примеры не заменяют общее правило. Один пример не доказывает, что мы поняли все случаи. Поэтому хороший пакет хранит оба уровня:</p>
+<pre lang="text" class="notranslate"><code class="language-text">Rule: обобщение, которое должно быть истинно
+Examples: несколько точек, уточняющих границы правила</code></pre>
+<h3>BDD не требует Gherkin везде</h3>
+<p>Given / When / Then можно использовать в обычном Markdown, тестах или таблицах. Gherkin нужен, когда ценны единый парсер, отчёты и связка со step definitions.</p>
+<p>Не стоит автоматизировать каждый текстовый сценарий через UI. Одни правила дешевле проверять на уровне доменной модели или API, другие — контрактными тестами, немногие критические пути — end-to-end. Исполняемая спецификация должна быть стабильной и быстрой, иначе она превращается в дорогую дублирующую тестовую обвязку.</p>
+<h2>4. Как три подхода складываются в одно ТЗ</h2>
+<p>Вернёмся к примеру.</p>
+<h3>Уровень 1. Use case удерживает целое</h3>
+<p><code>UC-07 Импортировать банковскую выписку</code> показывает:</p>
+<ul><li>границу Accounting System;</li><li>цель бухгалтера;</li><li>основной путь;</li><li>отмену, неверный формат, валютный конфликт, дубли и откат;</li><li>гарантии атомарности и аудита.</li></ul>
+<p>Агент видит не отдельный экран, а жизненный цикл операции.</p>
+<h3>Уровень 2. User story ограничивает изменение</h3>
+<p><code>US-07.3 Обнаружить и пропустить ранее импортированные операции</code> выбирает один поставляемый срез. В ней явно указано:</p>
+<pre lang="markdown" class="notranslate"><code class="language-markdown">Parent use case: UC-07
+Covers: extension 4a
+In scope: дубли с тем же банковским ID в пределах одного счёта
+Out of scope: исправленные банком операции; поиск дублей без банковского ID</code></pre>
+<p>Агент не обязан реализовывать все найденные в use case расширения за один проход.</p>
+<h3>Уровень 3. BDD уточняет правила</h3>
+<pre lang="gherkin" class="notranslate"><code class="language-gherkin">Rule: Банковский ID уникален в пределах счёта, но не всей организации
+
+Scenario: Тот же банковский ID на том же счёте
+  Given на счёте &quot;KZ-01&quot; есть операция с банковским ID &quot;A-100&quot;
+  When на счёт &quot;KZ-01&quot; импортируется операция с ID &quot;A-100&quot;
+  Then новая операция не создаётся
+  And операция учитывается как дубль
+
+Scenario: Тот же банковский ID на другом счёте
+  Given на счёте &quot;KZ-01&quot; есть операция с банковским ID &quot;A-100&quot;
+  When на счёт &quot;KZ-02&quot; импортируется операция с ID &quot;A-100&quot;
+  Then новая операция создаётся
+  And операция не учитывается как дубль</code></pre>
+<p>Здесь проявилась деталь, которой не было в одной фразе «пропускать дубли»: область уникальности. Именно такие пробелы coding agent иначе заполняет случайным архитектурным решением.</p>
+<h3>Трассировка</h3>
+<p>Связь можно сделать машиночитаемой без тяжёлой бюрократии:</p>
+<pre lang="text" class="notranslate"><code class="language-text">UC-07
+ ├─ US-07.1 → AC-07.1.1, AC-07.1.2
+ ├─ US-07.2 → AC-07.2.1, AC-07.2.2
+ └─ US-07.3 → RULE-DEDUP-1
+                ├─ EX-DEDUP-1
+                └─ EX-DEDUP-2</code></pre>
+<p>Идентификаторы позволяют агенту:</p>
+<ul><li>показать, какое требование реализует тест;</li><li>не потерять расширение при рефакторинге;</li><li>отличить уже поставленное от будущего;</li><li>назвать противоречие точнее, чем «ТЗ неясно».</li></ul>
+<p>Но трассировка не должна становиться отдельной ручной базой. Лучше хранить связи рядом с кодом и спецификацией и проверять их простыми скриптами.</p>
+<h2>5. Почему это особенно эффективно в агентской разработке</h2>
+<h3>1. Use case задаёт глобальную связность</h3>
+<p>LLM хорошо продолжает локальный паттерн и хуже удерживает неявную систему обязательств. Если попросить «добавить импорт CSV», агент естественно построит happy path. Use case напоминает, что операция имеет триггер, предусловия, заинтересованных лиц, гарантии и последствия ошибок.</p>
+<h3>2. Story ограничивает автономию</h3>
+<p>Получив целый use case, агент может реализовать слишком много. Story задаёт budget изменения: какой вертикальный срез нужен сейчас и что намеренно остаётся за рамкой.</p>
+<h3>3. Примеры создают проверочный oracle</h3>
+<p>Фраза «корректно обрабатывать дубли» допускает десяток интерпретаций. Два примера с разными счетами превращают её в решение, которое можно выразить тестом.</p>
+<h3>4. Структура улучшает восстановление после смены сессии</h3>
+<p>Новая сессия агента может восстановить намерение по стабильным артефактам: от failing test к example, от example к rule, от rule к story и use case. История чата для этого гораздо слабее.</p>
+<h3>5. Расширения естественно превращаются в тест-дизайн</h3>
+<p>Каждая ветка use case — кандидат на правило, пример, дополнительную story или явный отказ от реализации. Это лучше случайного списка edge cases, потому что ветка привязана к точке основного потока и имеет понятное продолжение.</p>
+<h2>6. Минимальный пакет спецификации для coding agent</h2>
+<p>Для средней продуктовой функции я бы давал агенту не «максимально подробное ТЗ», а небольшой связанный пакет.</p>
+<h3>A. Контекст</h3>
+<pre lang="markdown" class="notranslate"><code class="language-markdown">Problem: какую проблему решаем
+Outcome: какой результат нужен пользователю или бизнесу
+System boundary: что считается системой
+Glossary: только неоднозначные доменные термины</code></pre>
+<h3>B. Use case</h3>
+<pre lang="markdown" class="notranslate"><code class="language-markdown">ID, name, primary actor, trigger
+preconditions
+main success scenario
+extensions
+success/minimal guarantees</code></pre>
+<h3>C. Текущая story</h3>
+<pre lang="markdown" class="notranslate"><code class="language-markdown">ID and parent use case
+role / capability / benefit
+in scope / out of scope
+dependencies and constraints</code></pre>
+<h3>D. Rules и examples</h3>
+<pre lang="markdown" class="notranslate"><code class="language-markdown">Rule: одно общее утверждение
+Examples: happy, boundary, rejection/recovery
+Open questions: неизвестное, которое нельзя безопасно угадать</code></pre>
+<h3>E. Инженерные контракты</h3>
+<p>Три рассматриваемых подхода покрывают главным образом функциональное поведение. Они не заменяют:</p>
+<ul><li>API и event contracts;</li><li>модель данных и миграции;</li><li>требования к безопасности и privacy;</li><li>latency, throughput и availability;</li><li>observability и audit;</li><li>совместимость и rollout;</li><li>ограничения архитектуры;</li><li>команды проверки и definition of done.</li></ul>
+<p>Это особенно важно для агента: BDD-сценарий может доказать бизнес-поведение на трёх примерах и ничего не сказать о гонках, лимитах памяти или правах доступа.</p>
+<h3>F. Команда завершения</h3>
+<pre lang="markdown" class="notranslate"><code class="language-markdown">Done when:
+- перечисленные examples автоматизированы на подходящем уровне;
+- существующие проверки проходят;
+- поведение вне scope не изменилось;
+- документация и contracts обновлены;
+- агент сообщает о решениях, которые пришлось принять вне спецификации.</code></pre>
+<h2>7. Типичные ошибки</h2>
+<h3>Ошибка: use case равен happy path</h3>
+<p>Если записан только основной поток, самые дорогие решения остались за рамкой: отказ внешней системы, повтор, отмена, частичный результат и восстановление.</p>
+<p><strong>Исправление:</strong> после каждого шага спросить: что может пойти иначе, что система способна обнаружить и что обязана сделать?</p>
+<h3>Ошибка: use case описывает UI</h3>
+<p>Последовательность экранов быстро устаревает и преждевременно фиксирует решение.</p>
+<p><strong>Исправление:</strong> писать намерения акторов и обязанности системы. UI-flow хранить отдельно как дизайн реализации.</p>
+<h3>Ошибка: story считается полным требованием</h3>
+<p>Три строки <code>As a / I want / so that</code> создают впечатление ясности, но скрывают правила.</p>
+<p><strong>Исправление:</strong> сохранить 3C. Для агента материализовать результат Conversation в rules, examples, scope и questions.</p>
+<h3>Ошибка: технические слои выдают за stories</h3>
+<p>«Сначала база, потом backend, потом frontend» создаёт незавершённые горизонтальные куски и откладывает обратную связь.</p>
+<p><strong>Исправление:</strong> резать вертикально по поведению, правилу, сценарию или простому/сложному варианту.</p>
+<h3>Ошибка: любой Given / When / Then считается BDD</h3>
+<p>Gherkin после реализации может быть полезным тестом, но без discovery он лишь структурирует уже сделанные предположения.</p>
+<p><strong>Исправление:</strong> сначала обсуждать правила, примеры и вопросы; затем формулировать; затем автоматизировать.</p>
+<h3>Ошибка: сценарии повторяют клики</h3>
+<p>Такие тесты хрупки и не объясняют бизнес-поведение.</p>
+<p><strong>Исправление:</strong> <code>When бухгалтер импортирует выписку</code>, а детали UI проверять меньшим числом специализированных тестов.</p>
+<h3>Ошибка: examples заменяют rules</h3>
+<p>Набор точек без обобщения оставляет неизвестным поведение между точками.</p>
+<p><strong>Исправление:</strong> каждому набору примеров дать одно правило; каждый сценарий должен иллюстрировать конкретное правило.</p>
+<h3>Ошибка: спецификация пытается предусмотреть всё</h3>
+<p>Полная формализация дешёвой обратимой функции может стоить дороже кода.</p>
+<p><strong>Исправление:</strong> повышать точность по риску. Деньги, доступ, удаление данных, интеграции и необратимые действия требуют больше потоков и примеров, чем простой локальный CRUD.</p>
+<h2>8. Практический процесс подготовки задачи агенту</h2>
+<h3>Шаг 1. Назвать границу и результат</h3>
+<p>Не «сделать форму импорта», а «бухгалтер добавляет операции из банковской выписки в Accounting System».</p>
+<h3>Шаг 2. Составить actor–goal list</h3>
+<p>Сначала перечислить роли и их цели. Не углубляться во все поля и ошибки.</p>
+<h3>Шаг 3. Написать main success scenario</h3>
+<p>От триггера до полученной ценности, обычно несколькими шагами. Система пока чёрный ящик.</p>
+<h3>Шаг 4. Найти extensions</h3>
+<p>Пройти по каждому шагу и выписать альтернативы. Сразу разделить:</p>
+<ul><li>must handle now;</li><li>later story;</li><li>deliberately unsupported;</li><li>open question.</li></ul>
+<h3>Шаг 5. Выбрать story-срез</h3>
+<p>Story должна давать демонстрируемый результат и помещаться в одну агентскую итерацию с проверкой.</p>
+<h3>Шаг 6. Провести example mapping</h3>
+<p>Для story выписать rules, examples и questions. Не начинать с полировки Gherkin.</p>
+<h3>Шаг 7. Сформулировать ключевые examples</h3>
+<p>Использовать доменный язык, один <code>When</code>, наблюдаемые <code>Then</code> и конкретные значения там, где проходят границы правила.</p>
+<h3>Шаг 8. Добавить инженерные constraints</h3>
+<p>Назвать затрагиваемые contracts, требования качества, команды тестирования и запреты. Не заставлять агента выводить их из случайных файлов.</p>
+<h3>Шаг 9. Попросить агента сначала найти противоречия</h3>
+<p>Перед реализацией полезен отдельный проход:</p>
+<pre lang="text" class="notranslate"><code class="language-text">Сопоставь use case, story, rules и examples.
+Перечисли противоречия, непокрытые ветки и решения,
+которые невозможно безопасно вывести из спецификации.
+Не начинай реализацию, пока не отделишь неизвестное от допустимых инженерных решений.</code></pre>
+<h3>Шаг 10. Связать examples с проверками</h3>
+<p>Не обязательно через Cucumber. Важно, чтобы для каждого критичного example было ясно:</p>
+<ul><li>какой тест его проверяет;</li><li>на каком уровне;</li><li>какой внешний результат наблюдается;</li><li>что будет сигналом регрессии.</li></ul>
+<h2>Итог</h2>
+<p>Use cases оказались полезны для агентской разработки не потому, что AI возвращает нас к тяжёлому waterfall-ТЗ. Причина обратная: use case — компактный способ сохранить цель и ветвящееся поведение, не фиксируя реализацию.</p>
+<p>Но одного use case недостаточно.</p>
+<pre lang="text" class="notranslate"><code class="language-text">Use case говорит агенту:
+  не потеряй целую пользовательскую цель и альтернативные пути.
+
+User story говорит:
+  реализуй сейчас только этот поставляемый срез.
+
+BDD examples говорят:
+  вот как отличить правильное поведение от правдоподобной ошибки.</code></pre>
+<p>Лучшее ТЗ для coding agent — не самый длинный документ. Это система связанных артефактов, в которой каждый масштаб отвечает на свой вопрос:</p>
+<ul><li>цель не растворяется в задачах;</li><li>задачи не разрастаются до всего продукта;</li><li>правила не остаются абстрактными;</li><li>примеры можно превратить в проверки;</li><li>неизвестное отмечено как неизвестное, а не отдано модели на догадку.</li></ul>
+<p>Именно в таком виде классические техники анализа становятся не бюрократией, а интерфейсом между человеческим намерением и автономной реализацией.</p>
+<h2>Классические и базовые источники</h2>
+<ol><li><a href="https://www.ivarjacobson.com/publications/use-case-foundation" target="_blank" rel="nofollow noopener noreferrer">Ivar Jacobson, Alistair Cockburn — <em>Use-Case Foundation</em></a> — краткая современная фиксация общих основ use case: система, актор, цель и сеть потоков.</li><li><a href="https://courses.cs.duke.edu/compsci308/current/readings/cockburn_use_cases.pdf" target="_blank" rel="nofollow noopener noreferrer">Alistair Cockburn — <em>Writing Effective Use Cases: Reminders</em></a> — памятка из классической книги: уровни целей, точность, основной сценарий и extensions.</li><li>Alistair Cockburn — <em>Writing Effective Use Cases</em>, Addison-Wesley, 2001 — основная книга по goal-oriented текстовым use cases.</li><li><a href="https://martinfowler.com/bliki/UseCasesAndStories.html" target="_blank" rel="nofollow noopener noreferrer">Martin Fowler — <em>Use Cases and Stories</em></a> — точное объяснение, почему use cases и user stories организуют требования для разных целей.</li><li><a href="https://xp123.com/invest-in-good-stories-and-smart-tasks/" target="_blank" rel="nofollow noopener noreferrer">Bill Wake — <em>INVEST in Good Stories, and SMART Tasks</em></a> — первоисточник эвристики INVEST и напоминание о Card, Conversation, Confirmation.</li><li>Mike Cohn — <em>User Stories Applied: For Agile Software Development</em>, Addison-Wesley, 2004 — классическое систематическое изложение user stories.</li><li><a href="https://dannorth.net/blog/introducing-bdd/" target="_blank" rel="nofollow noopener noreferrer">Dan North — <em>Introducing BDD</em></a> — исходная мотивация BDD, story template и Given / When / Then для acceptance criteria.</li><li><a href="https://cucumber.io/docs/bdd/" target="_blank" rel="nofollow noopener noreferrer">Cucumber — <em>Behaviour-Driven Development</em></a> — BDD как Discovery, Formulation и Automation.</li><li><a href="https://cucumber.io/docs/gherkin/reference/" target="_blank" rel="nofollow noopener noreferrer">Cucumber — <em>Gherkin Reference</em></a> — точная семантика Feature, Rule, Scenario, Given, When и Then.</li><li><a href="https://cucumber.io/blog/bdd/example-mapping-introduction/" target="_blank" rel="nofollow noopener noreferrer">Matt Wynne — <em>Introducing Example Mapping</em></a> — практическая связь story, rules, examples и questions.</li></ol>
+      </article>
+    </main>
+    <footer class="article-footer">
+      <p class="footer-links"><span>Данил Письменный</span><a href="/">Обо мне</a><a href="mailto:danil@brandymint.ru">danil@brandymint.ru</a></p>
+    </footer>
+  </section>
+</body>
+</html>
